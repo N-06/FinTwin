@@ -13,14 +13,15 @@ export const Route = createFileRoute("/app")({
   component: AppLayout,
 });
 
-const nav = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const nav: NavItem[] = [
   { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/app/simulator", label: "Simulator", icon: Wand2 },
   { to: "/app/goals", label: "Goals", icon: Target },
   { to: "/app/assistant", label: "AI Assistant", icon: Sparkles },
   { to: "/app/profile", label: "Profile", icon: User },
   { to: "/app/report", label: "Report", icon: FileText },
-] as const;
+];
 
 function AppLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });

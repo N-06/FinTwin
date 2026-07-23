@@ -9,54 +9,225 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppSimulatorRouteImport } from './routes/app.simulator'
+import { Route as AppReportRouteImport } from './routes/app.report'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppGoalsRouteImport } from './routes/app.goals'
+import { Route as AppAssistantRouteImport } from './routes/app.assistant'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AppAssistantThreadIdRouteImport } from './routes/app.assistant.$threadId'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSimulatorRoute = AppSimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportRoute = AppReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppGoalsRoute = AppGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAssistantRoute = AppAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => AppRoute,
 } as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppAssistantThreadIdRoute = AppAssistantThreadIdRouteImport.update({
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => AppAssistantRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
+  '/app/assistant': typeof AppAssistantRouteWithChildren
+  '/app/goals': typeof AppGoalsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/report': typeof AppReportRoute
+  '/app/simulator': typeof AppSimulatorRoute
+  '/app/': typeof AppIndexRoute
+  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
+  '/app/assistant': typeof AppAssistantRouteWithChildren
+  '/app/goals': typeof AppGoalsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/report': typeof AppReportRoute
+  '/app/simulator': typeof AppSimulatorRoute
+  '/app': typeof AppIndexRoute
+  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
+  '/app/assistant': typeof AppAssistantRouteWithChildren
+  '/app/goals': typeof AppGoalsRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/report': typeof AppReportRoute
+  '/app/simulator': typeof AppSimulatorRoute
+  '/app/': typeof AppIndexRoute
+  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/sitemap.xml'
+    | '/api/chat'
+    | '/app/assistant'
+    | '/app/goals'
+    | '/app/profile'
+    | '/app/report'
+    | '/app/simulator'
+    | '/app/'
+    | '/app/assistant/$threadId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat'
-  id: '__root__' | '/' | '/api/chat'
+  to:
+    | '/'
+    | '/sitemap.xml'
+    | '/api/chat'
+    | '/app/assistant'
+    | '/app/goals'
+    | '/app/profile'
+    | '/app/report'
+    | '/app/simulator'
+    | '/app'
+    | '/app/assistant/$threadId'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/sitemap.xml'
+    | '/api/chat'
+    | '/app/assistant'
+    | '/app/goals'
+    | '/app/profile'
+    | '/app/report'
+    | '/app/simulator'
+    | '/app/'
+    | '/app/assistant/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/simulator': {
+      id: '/app/simulator'
+      path: '/simulator'
+      fullPath: '/app/simulator'
+      preLoaderRoute: typeof AppSimulatorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/report': {
+      id: '/app/report'
+      path: '/report'
+      fullPath: '/app/report'
+      preLoaderRoute: typeof AppReportRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/goals': {
+      id: '/app/goals'
+      path: '/goals'
+      fullPath: '/app/goals'
+      preLoaderRoute: typeof AppGoalsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/assistant': {
+      id: '/app/assistant'
+      path: '/assistant'
+      fullPath: '/app/assistant'
+      preLoaderRoute: typeof AppAssistantRouteImport
+      parentRoute: typeof AppRoute
     }
     '/api/chat': {
       id: '/api/chat'
@@ -65,11 +236,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/assistant/$threadId': {
+      id: '/app/assistant/$threadId'
+      path: '/$threadId'
+      fullPath: '/app/assistant/$threadId'
+      preLoaderRoute: typeof AppAssistantThreadIdRouteImport
+      parentRoute: typeof AppAssistantRoute
+    }
   }
 }
 
+interface AppAssistantRouteChildren {
+  AppAssistantThreadIdRoute: typeof AppAssistantThreadIdRoute
+}
+
+const AppAssistantRouteChildren: AppAssistantRouteChildren = {
+  AppAssistantThreadIdRoute: AppAssistantThreadIdRoute,
+}
+
+const AppAssistantRouteWithChildren = AppAssistantRoute._addFileChildren(
+  AppAssistantRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppAssistantRoute: typeof AppAssistantRouteWithChildren
+  AppGoalsRoute: typeof AppGoalsRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppReportRoute: typeof AppReportRoute
+  AppSimulatorRoute: typeof AppSimulatorRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAssistantRoute: AppAssistantRouteWithChildren,
+  AppGoalsRoute: AppGoalsRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppReportRoute: AppReportRoute,
+  AppSimulatorRoute: AppSimulatorRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
