@@ -10,25 +10,32 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AppRouteImport } from './routes/app'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AppIndexRouteImport } from './routes/app.index'
-import { Route as AppSimulatorRouteImport } from './routes/app.simulator'
-import { Route as AppReportRouteImport } from './routes/app.report'
-import { Route as AppProfileRouteImport } from './routes/app.profile'
-import { Route as AppGoalsRouteImport } from './routes/app.goals'
-import { Route as AppAssistantRouteImport } from './routes/app.assistant'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
-import { Route as AppAssistantThreadIdRouteImport } from './routes/app.assistant.$threadId'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppSimulatorRouteImport } from './routes/_authenticated/app.simulator'
+import { Route as AuthenticatedAppReportRouteImport } from './routes/_authenticated/app.report'
+import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
+import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
+import { Route as AuthenticatedAppGoalsRouteImport } from './routes/_authenticated/app.goals'
+import { Route as AuthenticatedAppAssistantRouteImport } from './routes/_authenticated/app.assistant'
+import { Route as AuthenticatedAppAssistantThreadIdRouteImport } from './routes/_authenticated/app.assistant.$threadId'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -36,95 +43,118 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppSimulatorRoute = AppSimulatorRouteImport.update({
-  id: '/simulator',
-  path: '/simulator',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppReportRoute = AppReportRouteImport.update({
-  id: '/report',
-  path: '/report',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppProfileRoute = AppProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppGoalsRoute = AppGoalsRouteImport.update({
-  id: '/goals',
-  path: '/goals',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppAssistantRoute = AppAssistantRouteImport.update({
-  id: '/assistant',
-  path: '/assistant',
-  getParentRoute: () => AppRoute,
-} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppAssistantThreadIdRoute = AppAssistantThreadIdRouteImport.update({
-  id: '/$threadId',
-  path: '/$threadId',
-  getParentRoute: () => AppAssistantRoute,
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppSimulatorRoute =
+  AuthenticatedAppSimulatorRouteImport.update({
+    id: '/simulator',
+    path: '/simulator',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppReportRoute = AuthenticatedAppReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppProfileRoute = AuthenticatedAppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppOnboardingRoute =
+  AuthenticatedAppOnboardingRouteImport.update({
+    id: '/onboarding',
+    path: '/onboarding',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppGoalsRoute = AuthenticatedAppGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppAssistantRoute =
+  AuthenticatedAppAssistantRouteImport.update({
+    id: '/assistant',
+    path: '/assistant',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAssistantThreadIdRoute =
+  AuthenticatedAppAssistantThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedAppAssistantRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/app': typeof AuthenticatedAppRouteWithChildren
   '/api/chat': typeof ApiChatRoute
-  '/app/assistant': typeof AppAssistantRouteWithChildren
-  '/app/goals': typeof AppGoalsRoute
-  '/app/profile': typeof AppProfileRoute
-  '/app/report': typeof AppReportRoute
-  '/app/simulator': typeof AppSimulatorRoute
-  '/app/': typeof AppIndexRoute
-  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
+  '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/app/goals': typeof AuthenticatedAppGoalsRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/profile': typeof AuthenticatedAppProfileRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
+  '/app/simulator': typeof AuthenticatedAppSimulatorRoute
+  '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/assistant/$threadId': typeof AuthenticatedAppAssistantThreadIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
-  '/app/assistant': typeof AppAssistantRouteWithChildren
-  '/app/goals': typeof AppGoalsRoute
-  '/app/profile': typeof AppProfileRoute
-  '/app/report': typeof AppReportRoute
-  '/app/simulator': typeof AppSimulatorRoute
-  '/app': typeof AppIndexRoute
-  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
+  '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/app/goals': typeof AuthenticatedAppGoalsRoute
+  '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/app/profile': typeof AuthenticatedAppProfileRoute
+  '/app/report': typeof AuthenticatedAppReportRoute
+  '/app/simulator': typeof AuthenticatedAppSimulatorRoute
+  '/app': typeof AuthenticatedAppIndexRoute
+  '/app/assistant/$threadId': typeof AuthenticatedAppAssistantThreadIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRouteWithChildren
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/api/chat': typeof ApiChatRoute
-  '/app/assistant': typeof AppAssistantRouteWithChildren
-  '/app/goals': typeof AppGoalsRoute
-  '/app/profile': typeof AppProfileRoute
-  '/app/report': typeof AppReportRoute
-  '/app/simulator': typeof AppSimulatorRoute
-  '/app/': typeof AppIndexRoute
-  '/app/assistant/$threadId': typeof AppAssistantThreadIdRoute
+  '/_authenticated/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/_authenticated/app/goals': typeof AuthenticatedAppGoalsRoute
+  '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
+  '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
+  '/_authenticated/app/report': typeof AuthenticatedAppReportRoute
+  '/_authenticated/app/simulator': typeof AuthenticatedAppSimulatorRoute
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/assistant/$threadId': typeof AuthenticatedAppAssistantThreadIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/app'
+    | '/auth'
     | '/sitemap.xml'
+    | '/app'
     | '/api/chat'
     | '/app/assistant'
     | '/app/goals'
+    | '/app/onboarding'
     | '/app/profile'
     | '/app/report'
     | '/app/simulator'
@@ -133,10 +163,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/sitemap.xml'
     | '/api/chat'
     | '/app/assistant'
     | '/app/goals'
+    | '/app/onboarding'
     | '/app/profile'
     | '/app/report'
     | '/app/simulator'
@@ -145,21 +177,25 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/app'
+    | '/_authenticated'
+    | '/auth'
     | '/sitemap.xml'
+    | '/_authenticated/app'
     | '/api/chat'
-    | '/app/assistant'
-    | '/app/goals'
-    | '/app/profile'
-    | '/app/report'
-    | '/app/simulator'
-    | '/app/'
-    | '/app/assistant/$threadId'
+    | '/_authenticated/app/assistant'
+    | '/_authenticated/app/goals'
+    | '/_authenticated/app/onboarding'
+    | '/_authenticated/app/profile'
+    | '/_authenticated/app/report'
+    | '/_authenticated/app/simulator'
+    | '/_authenticated/app/'
+    | '/_authenticated/app/assistant/$threadId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiChatRoute: typeof ApiChatRoute
 }
@@ -173,11 +209,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -187,48 +230,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/': {
-      id: '/app/'
-      path: '/'
-      fullPath: '/app/'
-      preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/simulator': {
-      id: '/app/simulator'
-      path: '/simulator'
-      fullPath: '/app/simulator'
-      preLoaderRoute: typeof AppSimulatorRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/report': {
-      id: '/app/report'
-      path: '/report'
-      fullPath: '/app/report'
-      preLoaderRoute: typeof AppReportRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/profile': {
-      id: '/app/profile'
-      path: '/profile'
-      fullPath: '/app/profile'
-      preLoaderRoute: typeof AppProfileRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/goals': {
-      id: '/app/goals'
-      path: '/goals'
-      fullPath: '/app/goals'
-      preLoaderRoute: typeof AppGoalsRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/assistant': {
-      id: '/app/assistant'
-      path: '/assistant'
-      fullPath: '/app/assistant'
-      preLoaderRoute: typeof AppAssistantRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -236,64 +237,128 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/assistant/$threadId': {
-      id: '/app/assistant/$threadId'
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/simulator': {
+      id: '/_authenticated/app/simulator'
+      path: '/simulator'
+      fullPath: '/app/simulator'
+      preLoaderRoute: typeof AuthenticatedAppSimulatorRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/report': {
+      id: '/_authenticated/app/report'
+      path: '/report'
+      fullPath: '/app/report'
+      preLoaderRoute: typeof AuthenticatedAppReportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/profile': {
+      id: '/_authenticated/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AuthenticatedAppProfileRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/onboarding': {
+      id: '/_authenticated/app/onboarding'
+      path: '/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AuthenticatedAppOnboardingRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/goals': {
+      id: '/_authenticated/app/goals'
+      path: '/goals'
+      fullPath: '/app/goals'
+      preLoaderRoute: typeof AuthenticatedAppGoalsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/assistant': {
+      id: '/_authenticated/app/assistant'
+      path: '/assistant'
+      fullPath: '/app/assistant'
+      preLoaderRoute: typeof AuthenticatedAppAssistantRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/assistant/$threadId': {
+      id: '/_authenticated/app/assistant/$threadId'
       path: '/$threadId'
       fullPath: '/app/assistant/$threadId'
-      preLoaderRoute: typeof AppAssistantThreadIdRouteImport
-      parentRoute: typeof AppAssistantRoute
+      preLoaderRoute: typeof AuthenticatedAppAssistantThreadIdRouteImport
+      parentRoute: typeof AuthenticatedAppAssistantRoute
     }
   }
 }
 
-interface AppAssistantRouteChildren {
-  AppAssistantThreadIdRoute: typeof AppAssistantThreadIdRoute
+interface AuthenticatedAppAssistantRouteChildren {
+  AuthenticatedAppAssistantThreadIdRoute: typeof AuthenticatedAppAssistantThreadIdRoute
 }
 
-const AppAssistantRouteChildren: AppAssistantRouteChildren = {
-  AppAssistantThreadIdRoute: AppAssistantThreadIdRoute,
+const AuthenticatedAppAssistantRouteChildren: AuthenticatedAppAssistantRouteChildren =
+  {
+    AuthenticatedAppAssistantThreadIdRoute:
+      AuthenticatedAppAssistantThreadIdRoute,
+  }
+
+const AuthenticatedAppAssistantRouteWithChildren =
+  AuthenticatedAppAssistantRoute._addFileChildren(
+    AuthenticatedAppAssistantRouteChildren,
+  )
+
+interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppAssistantRoute: typeof AuthenticatedAppAssistantRouteWithChildren
+  AuthenticatedAppGoalsRoute: typeof AuthenticatedAppGoalsRoute
+  AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
+  AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
+  AuthenticatedAppReportRoute: typeof AuthenticatedAppReportRoute
+  AuthenticatedAppSimulatorRoute: typeof AuthenticatedAppSimulatorRoute
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
 }
 
-const AppAssistantRouteWithChildren = AppAssistantRoute._addFileChildren(
-  AppAssistantRouteChildren,
-)
-
-interface AppRouteChildren {
-  AppAssistantRoute: typeof AppAssistantRouteWithChildren
-  AppGoalsRoute: typeof AppGoalsRoute
-  AppProfileRoute: typeof AppProfileRoute
-  AppReportRoute: typeof AppReportRoute
-  AppSimulatorRoute: typeof AppSimulatorRoute
-  AppIndexRoute: typeof AppIndexRoute
+const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppAssistantRoute: AuthenticatedAppAssistantRouteWithChildren,
+  AuthenticatedAppGoalsRoute: AuthenticatedAppGoalsRoute,
+  AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
+  AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,
+  AuthenticatedAppReportRoute: AuthenticatedAppReportRoute,
+  AuthenticatedAppSimulatorRoute: AuthenticatedAppSimulatorRoute,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
 }
 
-const AppRouteChildren: AppRouteChildren = {
-  AppAssistantRoute: AppAssistantRouteWithChildren,
-  AppGoalsRoute: AppGoalsRoute,
-  AppProfileRoute: AppProfileRoute,
-  AppReportRoute: AppReportRoute,
-  AppSimulatorRoute: AppSimulatorRoute,
-  AppIndexRoute: AppIndexRoute,
+const AuthenticatedAppRouteWithChildren =
+  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
 }
 
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRouteWithChildren,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

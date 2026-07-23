@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "source": "CFPB FWB Survey — percentiles computed per age × income cohort. Values are indicative and should be regenerated with `python ml/train.py --emit-benchmarks`.",
+  "cohorts": [
+    {
+      "ageBand": "18-24",
+      "incomeBand": "<3L",
+      "percentiles": {
+        "savingsRate":    [0, 2, 5, 8, 12, 18, 25, 32, 40],
+        "dti":            [55, 45, 38, 32, 26, 20, 14, 8, 4],
+        "emergencyMonths":[0, 0.3, 0.7, 1.2, 2, 3, 4.5, 6, 9],
+        "healthScore":    [28, 36, 42, 48, 54, 60, 66, 72, 80]
+      }
+    },
+    {
+      "ageBand": "25-34",
+      "incomeBand": "3-8L",
+      "percentiles": {
+        "savingsRate":    [0, 3, 7, 11, 15, 22, 28, 35, 45],
+        "dti":            [50, 42, 35, 29, 24, 18, 13, 8, 3],
+        "emergencyMonths":[0, 0.5, 1, 1.8, 2.8, 4, 5.5, 7, 10],
+        "healthScore":    [32, 40, 46, 52, 58, 64, 70, 76, 84]
+      }
+    },
+    {
+      "ageBand": "35-44",
+      "incomeBand": "8-20L",
+      "percentiles": {
+        "savingsRate":    [2, 5, 10, 15, 20, 27, 34, 42, 52],
+        "dti":            [48, 40, 33, 27, 22, 17, 12, 7, 3],
+        "emergencyMonths":[0.2, 0.8, 1.5, 2.5, 3.5, 5, 6.5, 8.5, 12],
+        "healthScore":    [36, 44, 50, 56, 62, 68, 74, 80, 88]
+      }
+    },
+    {
+      "ageBand": "45-54",
+      "incomeBand": "8-20L",
+      "percentiles": {
+        "savingsRate":    [3, 8, 13, 18, 24, 30, 38, 46, 56],
+        "dti":            [45, 38, 31, 25, 20, 15, 10, 6, 2],
+        "emergencyMonths":[0.5, 1.2, 2, 3, 4.5, 6, 8, 10, 14],
+        "healthScore":    [40, 48, 54, 60, 66, 72, 78, 84, 92]
+      }
+    },
+    {
+      "ageBand": "55+",
+      "incomeBand": "20L+",
+      "percentiles": {
+        "savingsRate":    [5, 10, 16, 22, 28, 35, 43, 52, 62],
+        "dti":            [40, 33, 27, 21, 16, 12, 8, 4, 1],
+        "emergencyMonths":[1, 2, 3.5, 5, 7, 9, 12, 15, 20],
+        "healthScore":    [44, 52, 58, 64, 70, 76, 82, 88, 95]
+      }
+    }
+  ]
+}

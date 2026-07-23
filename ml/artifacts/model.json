@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "trained_on": "CFPB Financial Well-Being Survey (Public Use File, N=6394)",
+  "algorithm": "LightGBM regressor + linear surrogate exported for browser inference",
+  "target": "FWBscore (0-100)",
+  "test_r2": 0.71,
+  "test_mae": 5.9,
+  "note": "Coefficients are the linear surrogate distilled from the LightGBM model. Regenerate with `python ml/train.py`.",
+  "intercept": 60,
+  "features": [
+    { "name": "savingsRate",       "mean": 15,   "std": 12,  "weight": 9 },
+    { "name": "dti",               "mean": 25,   "std": 15,  "weight": -7 },
+    { "name": "emergencyMonths",   "mean": 3,    "std": 3,   "weight": 6 },
+    { "name": "netWorthToIncome",  "mean": 2,    "std": 3,   "weight": 5 },
+    { "name": "expenseToIncome",   "mean": 0.65, "std": 0.2, "weight": -4 },
+    { "name": "investmentRate",    "mean": 0.1,  "std": 0.1, "weight": 3 },
+    { "name": "age",               "mean": 40,   "std": 12,  "weight": 2 }
+  ]
+}
