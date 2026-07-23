@@ -1,33 +1,41 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, LineChart, Sparkles, Target, Shield, Wand2, FileText } from "lucide-react";
-
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowRight, LineChart, Sparkles, Target, Shield, Wand2, FileText, Brain } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "FinTwin — Your AI Financial Twin" },
-      { name: "description", content: "Build a digital twin of your financial life. Simulate life decisions, see your Financial Health Score, and get AI guidance instantly." },
+      { name: "description", content: "Build a digital twin of your financial life. Simulate life decisions, see an ML-derived Financial Health Score, and get AI guidance." },
       { property: "og:title", content: "FinTwin — Your AI Financial Twin" },
-      { property: "og:description", content: "Build a digital twin of your financial life. Simulate life decisions, see your Financial Health Score, and get AI guidance." },
+      { property: "og:description", content: "Build a digital twin of your financial life. ML-scored, AI-guided, private to you." },
     ],
   }),
   component: Landing,
 });
 
 function Landing() {
+  const [signedIn, setSignedIn] = useState<boolean | null>(null);
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => setSignedIn(!!data.user));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s?.user));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-surface text-foreground">
-      <Nav />
-      <Hero />
+      <Nav signedIn={signedIn} />
+      <Hero signedIn={signedIn} />
       <Features />
-      <ScenarioStrip />
-      <CTA />
+      <ModelStrip />
+      <CTA signedIn={signedIn} />
       <Footer />
     </div>
   );
 }
 
-function Nav() {
+function Nav({ signedIn }: { signedIn: boolean | null }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -39,26 +47,39 @@ function Nav() {
         </Link>
         <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
           <a href="#features" className="hover:text-primary">Features</a>
-          <a href="#simulator" className="hover:text-primary">Simulator</a>
-          <a href="#assistant" className="hover:text-primary">AI Assistant</a>
+          <a href="#model" className="hover:text-primary">How it scores</a>
         </nav>
-        <Link
-          to="/app"
-          className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft transition-all hover:shadow-elegant"
-        >
-          Launch app <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
+        {signedIn ? (
+          <Link
+            to="/app"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:shadow-elegant"
+          >
+            Open dashboard <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        ) : (
+          <div className="flex items-center gap-2">
+            <Link to="/auth" className="hidden rounded-full px-3 py-2 text-sm font-medium text-primary hover:bg-accent md:inline-flex">
+              Sign in
+            </Link>
+            <Link
+              to="/auth"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:shadow-elegant"
+            >
+              Get started <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );
 }
 
-function Hero() {
+function Hero({ signedIn }: { signedIn: boolean | null }) {
   return (
     <section className="relative overflow-hidden">
       <div className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-16 pt-20 text-center md:pt-32">
         <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-accent/50 px-3 py-1 text-xs font-medium text-primary">
-          <Sparkles className="h-3.5 w-3.5 text-gold" /> AI-powered personal finance
+          <Sparkles className="h-3.5 w-3.5 text-gold" /> AI + ML-powered personal finance
         </span>
         <h1 className="mt-6 font-serif text-5xl leading-[1.05] text-primary md:text-7xl">
           Meet your
@@ -66,59 +87,52 @@ function Hero() {
           <span className="italic text-gold">financial twin.</span>
         </h1>
         <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-          A living digital model of your money. Track your net worth, simulate life's biggest
-          what-ifs, and get AI-powered guidance — all in one place.
+          A living digital model of your money. Track net worth, simulate life's biggest what-ifs,
+          and get an ML-derived Financial Health Score benchmarked against real survey data.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
-            to="/app"
+            to={signedIn ? "/app" : "/auth"}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
           >
-            Build my twin <ArrowRight className="h-4 w-4" />
+            {signedIn ? "Open my twin" : "Build my twin"} <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link
-            to="/app/simulator"
-            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-accent"
+          <a
+            href="#model"
+            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background px-6 py-3 text-sm font-medium text-primary hover:bg-accent"
           >
-            Try the simulator
-          </Link>
+            How the score works
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-
-
 function Features() {
   const items = [
-    { icon: LineChart, title: "Financial Health Score", desc: "One number that captures your complete financial picture across 5 dimensions." },
-    { icon: Wand2, title: "What-If Simulator", desc: "Buy a car, lose a job, get a raise — instantly see how it changes your future." },
-    { icon: Sparkles, title: "AI Financial Assistant", desc: "Chat with an assistant that knows your numbers and answers in plain language." },
-    { icon: Target, title: "Goal Tracking", desc: "Set life goals — a home, retirement, a sabbatical — and track your path to each." },
-    { icon: Shield, title: "Emergency Coverage", desc: "See exactly how many months your safety net will last if income stops today." },
+    { icon: LineChart, title: "Financial Health Score", desc: "0–100 score from a model trained on the CFPB Financial Well-Being Survey." },
+    { icon: Wand2, title: "What-If Simulator", desc: "Design any scenario — a raise, a car, a home loan — and see the impact instantly." },
+    { icon: Sparkles, title: "AI Financial Assistant", desc: "Chat threads that know your numbers and explain them in plain language." },
+    { icon: Target, title: "Goal Tracking", desc: "Set life goals and track your path to each." },
+    { icon: Shield, title: "Emergency Coverage", desc: "See how many months your safety net covers if income stops today." },
     { icon: FileText, title: "Downloadable Report", desc: "Export a beautifully formatted snapshot of your full financial life." },
   ];
   return (
-    <section id="features" className="border-t border-border bg-background py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="max-w-2xl">
-          <p className="text-sm font-medium uppercase tracking-widest text-gold">Everything you need</p>
-          <h2 className="mt-3 font-serif text-4xl text-primary md:text-5xl">
-            Your money, understood.
-          </h2>
+    <section id="features" className="border-t border-border/60 bg-background/60 py-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="text-center">
+          <p className="text-xs font-medium uppercase tracking-widest text-gold">What's inside</p>
+          <h2 className="mt-2 font-serif text-4xl text-primary">Everything your money needs, in one place.</h2>
         </div>
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((it) => (
-            <div
-              key={it.title}
-              className="group rounded-2xl border border-border bg-card p-7 shadow-soft transition-all hover:-translate-y-1 hover:border-gold/40 hover:shadow-elegant"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <div key={it.title} className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-transform hover:-translate-y-1">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent text-primary">
                 <it.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 text-lg font-semibold text-primary">{it.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.desc}</p>
+              <h3 className="mt-4 font-serif text-xl text-primary">{it.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{it.desc}</p>
             </div>
           ))}
         </div>
@@ -127,59 +141,53 @@ function Features() {
   );
 }
 
-function ScenarioStrip() {
-  const scenarios = [
-    "What if I buy a car?",
-    "What if I lose my job?",
-    "What if I get a 20% raise?",
-    "What if inflation hits 10%?",
-    "What if I save ₹10,000 more?",
-    "What if I take a home loan?",
-  ];
+function ModelStrip() {
   return (
-    <section id="simulator" className="relative overflow-hidden bg-gradient-hero py-24 text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-6">
-        <p className="text-sm font-medium uppercase tracking-widest text-gold">What-If Simulator</p>
-        <h2 className="mt-3 max-w-3xl font-serif text-4xl md:text-6xl">
-          Rehearse your <span className="italic text-gold">future decisions</span> before you make them.
-        </h2>
-        <div className="mt-12 flex flex-wrap gap-3">
-          {scenarios.map((s) => (
-            <span
-              key={s}
-              className="rounded-full border border-gold/30 bg-white/5 px-4 py-2 text-sm backdrop-blur transition-colors hover:bg-white/10"
-            >
-              {s}
-            </span>
-          ))}
+    <section id="model" className="border-t border-border/60 py-20">
+      <div className="mx-auto max-w-4xl px-6">
+        <div className="rounded-3xl bg-gradient-hero p-10 text-primary-foreground shadow-elegant">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold/20">
+              <Brain className="h-5 w-5 text-gold" />
+            </div>
+            <p className="text-xs font-medium uppercase tracking-widest text-gold">The model</p>
+          </div>
+          <h2 className="mt-4 font-serif text-3xl md:text-4xl">
+            Trained on real survey data, scored in your browser.
+          </h2>
+          <p className="mt-4 text-primary-foreground/80">
+            Your Financial Health Score is produced by a gradient-boosted regressor trained on the
+            CFPB Financial Well-Being Survey (~6,400 U.S. adults), then distilled into a compact
+            model that runs offline in your browser. No numbers leave your device to be scored.
+          </p>
+          <ul className="mt-6 grid gap-3 text-sm text-primary-foreground/80 sm:grid-cols-2">
+            <li>• Ensemble comparison: RandomForest · XGBoost · LightGBM · CatBoost</li>
+            <li>• Hyperparameter tuning with Optuna</li>
+            <li>• SHAP-based driver attribution per user</li>
+            <li>• Cohort percentiles by age × income</li>
+          </ul>
+          <p className="mt-6 text-xs text-primary-foreground/60">
+            Full pipeline reproducible with <code className="rounded bg-black/20 px-1.5 py-0.5">python ml/train.py</code>.
+          </p>
         </div>
-        <Link
-          to="/app/simulator"
-          className="mt-12 inline-flex items-center gap-2 rounded-full bg-gradient-gold px-6 py-3 text-sm font-semibold text-primary shadow-gold transition-transform hover:-translate-y-0.5"
-        >
-          Try a scenario <ArrowRight className="h-4 w-4" />
-        </Link>
       </div>
     </section>
   );
 }
 
-function CTA() {
+function CTA({ signedIn }: { signedIn: boolean | null }) {
+  const nav = useNavigate();
   return (
-    <section id="assistant" className="bg-background py-24">
-      <div className="mx-auto max-w-4xl rounded-3xl border border-border bg-gradient-surface p-12 text-center shadow-elegant">
-        <h2 className="font-serif text-4xl text-primary md:text-5xl">
-          Ready to meet your twin?
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Set up your profile in under two minutes — no signup required. Everything lives in your browser.
-        </p>
-        <Link
-          to="/app"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
+    <section className="border-t border-border/60 py-20">
+      <div className="mx-auto max-w-3xl px-6 text-center">
+        <h2 className="font-serif text-4xl text-primary">Ready to meet your twin?</h2>
+        <p className="mt-3 text-muted-foreground">Free, private, and yours in under two minutes.</p>
+        <button
+          onClick={() => nav({ to: signedIn ? "/app" : "/auth" })}
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-medium text-primary-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
         >
-          Launch FinTwin <ArrowRight className="h-4 w-4" />
-        </Link>
+          {signedIn ? "Open dashboard" : "Create my twin"} <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
     </section>
   );
@@ -187,14 +195,8 @@ function CTA() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border bg-background py-10 text-sm text-muted-foreground">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 md:flex-row">
-        <div className="flex items-center gap-2">
-          <span className="font-serif text-lg text-primary">FinTwin</span>
-          <span>© {new Date().getFullYear()}</span>
-        </div>
-        <p>Built for smarter financial decisions.</p>
-      </div>
+    <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
+      © {new Date().getFullYear()} FinTwin. For educational use — not financial advice.
     </footer>
   );
 }
