@@ -119,6 +119,24 @@ function Dashboard() {
         </div>
       </section>
 
+      {/* Cohort benchmark */}
+      <section className="mt-6 rounded-2xl border border-border bg-card p-6 shadow-soft">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            How you compare — {cohort.ageBand} · {cohort.incomeBand} cohort
+          </h2>
+          <span className="text-xs text-muted-foreground">Percentiles from CFPB FWB survey</span>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <PercentileBar label="Health Score"    value={ml.score}                  ptiles={cohort.percentiles.healthScore} />
+          <PercentileBar label="Savings Rate"    value={metrics.savingsRate}       ptiles={cohort.percentiles.savingsRate} suffix="%" />
+          <PercentileBar label="Debt-to-Income"  value={metrics.debtToIncome}      ptiles={cohort.percentiles.dti}          suffix="%" invert />
+          <PercentileBar label="Emergency (mo)"  value={metrics.emergencyMonths}   ptiles={cohort.percentiles.emergencyMonths} />
+        </div>
+      </section>
+
+
+
       {/* Projections */}
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
