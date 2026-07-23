@@ -8,7 +8,7 @@ import { useProfile } from "@/lib/finance-store";
 import { computeMetrics } from "@/lib/finance-calc";
 import { Send, User, Sparkles } from "lucide-react";
 
-export const Route = createFileRoute("/app/assistant/$threadId")({
+export const Route = createFileRoute("/_authenticated/app/assistant/$threadId")({
   component: Chat,
 });
 

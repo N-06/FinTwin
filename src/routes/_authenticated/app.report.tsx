@@ -4,7 +4,7 @@ import { useProfile, formatCurrency } from "@/lib/finance-store";
 import { computeMetrics, projectFuture } from "@/lib/finance-calc";
 import { Download, Printer } from "lucide-react";
 
-export const Route = createFileRoute("/app/report")({
+export const Route = createFileRoute("/_authenticated/app/report")({
   head: () => ({
     meta: [
       { title: "Financial Report — FinTwin" },

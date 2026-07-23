@@ -3,7 +3,7 @@ import { useProfile, formatCurrency } from "@/lib/finance-store";
 import { Plus, Trash2 } from "lucide-react";
 import type { Goal } from "@/lib/finance-types";
 
-export const Route = createFileRoute("/app/goals")({
+export const Route = createFileRoute("/_authenticated/app/goals")({
   head: () => ({
     meta: [
       { title: "Goals — FinTwin" },

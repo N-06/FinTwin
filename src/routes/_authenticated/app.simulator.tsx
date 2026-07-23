@@ -6,7 +6,7 @@ import type { Scenario } from "@/lib/finance-types";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 import { Car, Briefcase, TrendingUp, Flame, PiggyBank, Home, RotateCcw } from "lucide-react";
 
-export const Route = createFileRoute("/app/simulator")({
+export const Route = createFileRoute("/_authenticated/app/simulator")({
   head: () => ({
     meta: [
       { title: "What-If Simulator — FinTwin" },

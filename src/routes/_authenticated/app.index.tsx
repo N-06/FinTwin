@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { TrendingUp, TrendingDown, Wallet, PiggyBank, Landmark, HeartPulse, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/app/")({
+export const Route = createFileRoute("/_authenticated/app/")({
   component: Dashboard,
 });
 

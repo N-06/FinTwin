@@ -3,7 +3,7 @@ import { useProfile, formatCurrency } from "@/lib/finance-store";
 import type { Expense, Investment, Loan } from "@/lib/finance-types";
 import { Plus, Trash2, RotateCcw } from "lucide-react";
 
-export const Route = createFileRoute("/app/profile")({
+export const Route = createFileRoute("/_authenticated/app/profile")({
   head: () => ({
     meta: [
       { title: "Profile — FinTwin" },

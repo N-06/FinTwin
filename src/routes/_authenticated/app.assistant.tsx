@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, useNavigate, useParams, useRouterState }
 import { useThreads } from "@/lib/threads-store";
 import { Plus, MessageSquare, Trash2 } from "lucide-react";
 
-export const Route = createFileRoute("/app/assistant")({
+export const Route = createFileRoute("/_authenticated/app/assistant")({
   head: () => ({
     meta: [
       { title: "AI Assistant — FinTwin" },
