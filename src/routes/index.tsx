@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, LineChart, Sparkles, Target, Shield, Wand2, FileText } from "lucide-react";
-import heroImg from "@/assets/fintwin-hero.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
