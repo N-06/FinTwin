@@ -56,63 +56,39 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-20 md:grid-cols-2 md:pt-28">
-        <div className="flex flex-col justify-center">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-gold/40 bg-accent/50 px-3 py-1 text-xs font-medium text-primary">
-            <Sparkles className="h-3.5 w-3.5 text-gold" /> AI-powered personal finance
-          </span>
-          <h1 className="mt-6 font-serif text-5xl leading-[1.05] text-primary md:text-7xl">
-            Meet your
-            <br />
-            <span className="italic text-gold">financial twin.</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-            A living digital model of your money. Track your net worth, simulate life's biggest
-            what-ifs, and get AI-powered guidance — all in one place.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              to="/app"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
-            >
-              Build my twin <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/app/simulator"
-              className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-accent"
-            >
-              Try the simulator
-            </Link>
-          </div>
-          <div className="mt-10 grid grid-cols-3 gap-6 border-t border-border pt-6 text-sm">
-            <Stat k="6+" v="Health metrics" />
-            <Stat k="10+" v="Life scenarios" />
-            <Stat k="24/7" v="AI guidance" />
-          </div>
-        </div>
-        <div className="relative flex items-center justify-center">
-          <div className="absolute -inset-8 rounded-3xl bg-gradient-hero opacity-10 blur-3xl" />
-          <img
-            src={heroImg}
-            alt="Illustrated financial twin — silhouette filled with charts, coins, and light"
-            width={1600}
-            height={1200}
-            className="relative w-full max-w-lg animate-float rounded-2xl"
-          />
+      <div className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-16 pt-20 text-center md:pt-32">
+        <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-accent/50 px-3 py-1 text-xs font-medium text-primary">
+          <Sparkles className="h-3.5 w-3.5 text-gold" /> AI-powered personal finance
+        </span>
+        <h1 className="mt-6 font-serif text-5xl leading-[1.05] text-primary md:text-7xl">
+          Meet your
+          <br />
+          <span className="italic text-gold">financial twin.</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+          A living digital model of your money. Track your net worth, simulate life's biggest
+          what-ifs, and get AI-powered guidance — all in one place.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link
+            to="/app"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-elegant transition-transform hover:-translate-y-0.5"
+          >
+            Build my twin <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            to="/app/simulator"
+            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background px-6 py-3 text-sm font-medium text-primary transition-colors hover:bg-accent"
+          >
+            Try the simulator
+          </Link>
         </div>
       </div>
     </section>
   );
 }
 
-function Stat({ k, v }: { k: string; v: string }) {
-  return (
-    <div>
-      <div className="font-serif text-3xl text-primary">{k}</div>
-      <div className="text-xs uppercase tracking-wider text-muted-foreground">{v}</div>
-    </div>
-  );
-}
+
 
 function Features() {
   const items = [
