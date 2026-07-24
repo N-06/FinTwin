@@ -191,7 +191,7 @@ function Dashboard() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Asset composition</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Asset composition <InfoTip text="How your total assets split between cash and investments. Too much cash = inflation eats it; too little = no safety net." /></h2>
           <div className="mt-4 h-56">
             {netWorthMix.every((n) => n.value === 0) ? (
               <EmptyChart text="No assets recorded yet" />
