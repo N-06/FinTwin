@@ -7,7 +7,8 @@ import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
   PieChart, Pie, Cell, Legend, AreaChart, Area,
 } from "recharts";
-import { TrendingUp, TrendingDown, Wallet, PiggyBank, Landmark, HeartPulse, ArrowRight, Brain } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, PiggyBank, Landmark, HeartPulse, ArrowRight, Brain, BookOpen } from "lucide-react";
+import { InfoTip } from "@/components/InfoTip";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   component: Dashboard,
