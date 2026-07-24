@@ -160,7 +160,7 @@ function Dashboard() {
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">20-year projection</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">20-year projection <InfoTip text="Compounds your investing rate at expected returns, adjusts for inflation, and pays down loans on schedule. A directional forecast — use the Simulator to test what-ifs." /></h2>
             <Link to="/app/simulator" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-gold">
               Run a scenario <ArrowRight className="h-3 w-3" />
             </Link>
