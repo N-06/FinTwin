@@ -283,7 +283,7 @@ function RowShell({ children, onDelete }: { children: React.ReactNode; onDelete:
   );
 }
 
-function Txt({ label, value, onChange, compact, placeholder }: { label?: string; value: string; onChange: (v: string) => void; compact?: boolean; placeholder?: string }) {
+function Txt({ label, value, onChange, compact, placeholder, help }: { label?: string; value: string; onChange: (v: string) => void; compact?: boolean; placeholder?: string; help?: string }) {
   return (
     <label className="block">
       {label && <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>}
@@ -294,11 +294,12 @@ function Txt({ label, value, onChange, compact, placeholder }: { label?: string;
         onChange={(e) => onChange(e.target.value)}
         className={(label ? "mt-1.5 " : "") + "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30" + (compact ? " py-1.5" : "")}
       />
+      {help && <span className="mt-1 block text-[11px] leading-snug text-muted-foreground">{help}</span>}
     </label>
   );
 }
 
-function Num({ label, value, onChange, step = 1000, compact, suffix }: { label?: string; value: number; onChange: (v: number) => void; step?: number; compact?: boolean; suffix?: string }) {
+function Num({ label, value, onChange, step = 1000, compact, suffix, placeholder, help, min }: { label?: string; value: number; onChange: (v: number) => void; step?: number; compact?: boolean; suffix?: string; placeholder?: string; help?: string; min?: number }) {
   return (
     <label className="block">
       {label && <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>}
@@ -306,13 +307,15 @@ function Num({ label, value, onChange, step = 1000, compact, suffix }: { label?:
         <input
           type="number"
           step={step}
+          min={min}
           value={value === 0 ? "" : value}
-          placeholder="0"
+          placeholder={placeholder ?? "0"}
           onChange={(e) => onChange(Number(e.target.value) || 0)}
           className={(label ? "mt-1.5 " : "") + "w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30" + (compact ? " py-1.5" : "") + (suffix ? " pr-8" : "")}
         />
         {suffix && <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">{suffix}</span>}
       </div>
+      {help && <span className="mt-1 block text-[11px] leading-snug text-muted-foreground">{help}</span>}
     </label>
   );
 }
