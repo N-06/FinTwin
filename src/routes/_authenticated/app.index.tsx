@@ -138,7 +138,7 @@ function Dashboard() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Expense mix</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Expense mix <InfoTip text="Each slice is one recurring category you entered. Use it to spot the 1–2 categories worth trimming for the biggest impact." /></h2>
           <div className="mt-4 h-56">
             {expensePie.length === 0 ? (
               <EmptyChart text="Add expenses on the Profile page" />
