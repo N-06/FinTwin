@@ -79,13 +79,27 @@ function Dashboard() {
         <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
           <MetricCard icon={<Wallet />} label="Net Worth" value={formatCurrency(metrics.netWorth, cur)}
             hint={`${formatCurrency(metrics.totalAssets, cur)} assets − ${formatCurrency(metrics.totalLiabilities, cur)} debt`}
-            positive={metrics.netWorth >= 0} />
+            positive={metrics.netWorth >= 0}
+            tip="Everything you own (savings, emergency fund, investments) minus everything you owe (loan balances). Rising net worth = real financial progress." />
           <MetricCard icon={<PiggyBank />} label="Savings Rate" value={`${metrics.savingsRate.toFixed(1)}%`}
-            hint="Of monthly income" positive={metrics.savingsRate >= 20} />
+            hint="Of monthly income" positive={metrics.savingsRate >= 20}
+            tip="Share of your income you invest or save each month. 20%+ is strong, 10–20% is decent, under 10% leaves little room to build wealth." />
           <MetricCard icon={<Landmark />} label="Debt-to-Income" value={`${metrics.debtToIncome.toFixed(1)}%`}
-            hint="EMI as % of income" positive={metrics.debtToIncome < 35} />
+            hint="EMI as % of income" positive={metrics.debtToIncome < 35}
+            tip="Portion of your income already promised to loan EMIs. Under 35% is healthy; above 43% typically blocks new loans." />
           <MetricCard icon={<HeartPulse />} label="Emergency Fund" value={`${metrics.emergencyMonths.toFixed(1)} mo`}
-            hint="Months of expenses covered" positive={metrics.emergencyMonths >= 3} />
+            hint="Months of expenses covered" positive={metrics.emergencyMonths >= 3}
+            tip="How many months your emergency cash could cover your expenses. Aim for 3 months minimum, 6 months comfortable." />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-border bg-card p-6 shadow-soft">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            How you compare — {cohort.ageBand} · {cohort.incomeBand} cohort
+            <InfoTip text="Each bar shows your value and its percentile vs people in your age × income group. 70th percentile means you're doing better than 70% of that cohort. Debt-to-Income is inverted — lower is better." />
+          </h2>
+          <span className="text-xs text-muted-foreground">Percentiles from CFPB FWB survey</span>
         </div>
       </section>
 
