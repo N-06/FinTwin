@@ -56,12 +56,20 @@ function Dashboard() {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">A live snapshot of your money as of today.</p>
         </div>
-        <Link
-          to="/app/profile"
-          className="rounded-full border border-primary/20 bg-background px-4 py-2 text-sm font-medium text-primary hover:bg-accent"
-        >
-          Edit profile
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/app/glossary"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-accent/50 px-3 py-2 text-xs font-medium text-primary hover:bg-accent"
+          >
+            <BookOpen className="h-3.5 w-3.5 text-gold" /> Glossary
+          </Link>
+          <Link
+            to="/app/profile"
+            className="rounded-full border border-primary/20 bg-background px-4 py-2 text-sm font-medium text-primary hover:bg-accent"
+          >
+            Edit profile
+          </Link>
+        </div>
       </header>
 
       <section className="mt-8 grid gap-6 lg:grid-cols-3">
