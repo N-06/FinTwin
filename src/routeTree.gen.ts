@@ -21,6 +21,7 @@ import { Route as AuthenticatedAppReportRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAppProfileRouteImport } from './routes/_authenticated/app.profile'
 import { Route as AuthenticatedAppOnboardingRouteImport } from './routes/_authenticated/app.onboarding'
 import { Route as AuthenticatedAppGoalsRouteImport } from './routes/_authenticated/app.goals'
+import { Route as AuthenticatedAppGlossaryRouteImport } from './routes/_authenticated/app.glossary'
 import { Route as AuthenticatedAppAssistantRouteImport } from './routes/_authenticated/app.assistant'
 import { Route as AuthenticatedAppAssistantThreadIdRouteImport } from './routes/_authenticated/app.assistant.$threadId'
 
@@ -85,6 +86,12 @@ const AuthenticatedAppGoalsRoute = AuthenticatedAppGoalsRouteImport.update({
   path: '/goals',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAppGlossaryRoute =
+  AuthenticatedAppGlossaryRouteImport.update({
+    id: '/glossary',
+    path: '/glossary',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppAssistantRoute =
   AuthenticatedAppAssistantRouteImport.update({
     id: '/assistant',
@@ -105,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/api/chat': typeof ApiChatRoute
   '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/app/goals': typeof AuthenticatedAppGoalsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
@@ -119,6 +127,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/chat': typeof ApiChatRoute
   '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/app/goals': typeof AuthenticatedAppGoalsRoute
   '/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/app/profile': typeof AuthenticatedAppProfileRoute
@@ -136,6 +145,7 @@ export interface FileRoutesById {
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/api/chat': typeof ApiChatRoute
   '/_authenticated/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
+  '/_authenticated/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/_authenticated/app/goals': typeof AuthenticatedAppGoalsRoute
   '/_authenticated/app/onboarding': typeof AuthenticatedAppOnboardingRoute
   '/_authenticated/app/profile': typeof AuthenticatedAppProfileRoute
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/api/chat'
     | '/app/assistant'
+    | '/app/glossary'
     | '/app/goals'
     | '/app/onboarding'
     | '/app/profile'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/api/chat'
     | '/app/assistant'
+    | '/app/glossary'
     | '/app/goals'
     | '/app/onboarding'
     | '/app/profile'
@@ -183,6 +195,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app'
     | '/api/chat'
     | '/_authenticated/app/assistant'
+    | '/_authenticated/app/glossary'
     | '/_authenticated/app/goals'
     | '/_authenticated/app/onboarding'
     | '/_authenticated/app/profile'
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppGoalsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/glossary': {
+      id: '/_authenticated/app/glossary'
+      path: '/glossary'
+      fullPath: '/app/glossary'
+      preLoaderRoute: typeof AuthenticatedAppGlossaryRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/assistant': {
       id: '/_authenticated/app/assistant'
       path: '/assistant'
@@ -320,6 +340,7 @@ const AuthenticatedAppAssistantRouteWithChildren =
 
 interface AuthenticatedAppRouteChildren {
   AuthenticatedAppAssistantRoute: typeof AuthenticatedAppAssistantRouteWithChildren
+  AuthenticatedAppGlossaryRoute: typeof AuthenticatedAppGlossaryRoute
   AuthenticatedAppGoalsRoute: typeof AuthenticatedAppGoalsRoute
   AuthenticatedAppOnboardingRoute: typeof AuthenticatedAppOnboardingRoute
   AuthenticatedAppProfileRoute: typeof AuthenticatedAppProfileRoute
@@ -330,6 +351,7 @@ interface AuthenticatedAppRouteChildren {
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppAssistantRoute: AuthenticatedAppAssistantRouteWithChildren,
+  AuthenticatedAppGlossaryRoute: AuthenticatedAppGlossaryRoute,
   AuthenticatedAppGoalsRoute: AuthenticatedAppGoalsRoute,
   AuthenticatedAppOnboardingRoute: AuthenticatedAppOnboardingRoute,
   AuthenticatedAppProfileRoute: AuthenticatedAppProfileRoute,

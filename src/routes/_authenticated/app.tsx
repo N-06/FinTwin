@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Wand2, Target, Sparkles, User, FileText } from "lucide-react";
+import { LayoutDashboard, Wand2, Target, Sparkles, User, FileText, BookOpen } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app")({
   head: () => ({
@@ -19,6 +19,7 @@ const nav: NavItem[] = [
   { to: "/app/simulator", label: "Simulator", icon: Wand2 },
   { to: "/app/goals", label: "Goals", icon: Target },
   { to: "/app/assistant", label: "AI Assistant", icon: Sparkles },
+  { to: "/app/glossary", label: "Glossary", icon: BookOpen },
   { to: "/app/profile", label: "Profile", icon: User },
   { to: "/app/report", label: "Report", icon: FileText },
 ];

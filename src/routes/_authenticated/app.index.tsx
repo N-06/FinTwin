@@ -7,7 +7,8 @@ import {
   ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid,
   PieChart, Pie, Cell, Legend, AreaChart, Area,
 } from "recharts";
-import { TrendingUp, TrendingDown, Wallet, PiggyBank, Landmark, HeartPulse, ArrowRight, Brain } from "lucide-react";
+import { TrendingUp, TrendingDown, Wallet, PiggyBank, Landmark, HeartPulse, ArrowRight, Brain, BookOpen } from "lucide-react";
+import { InfoTip } from "@/components/InfoTip";
 
 export const Route = createFileRoute("/_authenticated/app/")({
   component: Dashboard,
@@ -55,12 +56,20 @@ function Dashboard() {
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">A live snapshot of your money as of today.</p>
         </div>
-        <Link
-          to="/app/profile"
-          className="rounded-full border border-primary/20 bg-background px-4 py-2 text-sm font-medium text-primary hover:bg-accent"
-        >
-          Edit profile
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/app/glossary"
+            className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-accent/50 px-3 py-2 text-xs font-medium text-primary hover:bg-accent"
+          >
+            <BookOpen className="h-3.5 w-3.5 text-gold" /> Glossary
+          </Link>
+          <Link
+            to="/app/profile"
+            className="rounded-full border border-primary/20 bg-background px-4 py-2 text-sm font-medium text-primary hover:bg-accent"
+          >
+            Edit profile
+          </Link>
+        </div>
       </header>
 
       <section className="mt-8 grid gap-6 lg:grid-cols-3">
@@ -70,13 +79,27 @@ function Dashboard() {
         <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
           <MetricCard icon={<Wallet />} label="Net Worth" value={formatCurrency(metrics.netWorth, cur)}
             hint={`${formatCurrency(metrics.totalAssets, cur)} assets − ${formatCurrency(metrics.totalLiabilities, cur)} debt`}
-            positive={metrics.netWorth >= 0} />
+            positive={metrics.netWorth >= 0}
+            tip="Everything you own (savings, emergency fund, investments) minus everything you owe (loan balances). Rising net worth = real financial progress." />
           <MetricCard icon={<PiggyBank />} label="Savings Rate" value={`${metrics.savingsRate.toFixed(1)}%`}
-            hint="Of monthly income" positive={metrics.savingsRate >= 20} />
+            hint="Of monthly income" positive={metrics.savingsRate >= 20}
+            tip="Share of your income you invest or save each month. 20%+ is strong, 10–20% is decent, under 10% leaves little room to build wealth." />
           <MetricCard icon={<Landmark />} label="Debt-to-Income" value={`${metrics.debtToIncome.toFixed(1)}%`}
-            hint="EMI as % of income" positive={metrics.debtToIncome < 35} />
+            hint="EMI as % of income" positive={metrics.debtToIncome < 35}
+            tip="Portion of your income already promised to loan EMIs. Under 35% is healthy; above 43% typically blocks new loans." />
           <MetricCard icon={<HeartPulse />} label="Emergency Fund" value={`${metrics.emergencyMonths.toFixed(1)} mo`}
-            hint="Months of expenses covered" positive={metrics.emergencyMonths >= 3} />
+            hint="Months of expenses covered" positive={metrics.emergencyMonths >= 3}
+            tip="How many months your emergency cash could cover your expenses. Aim for 3 months minimum, 6 months comfortable." />
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-2xl border border-border bg-card p-6 shadow-soft">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            How you compare — {cohort.ageBand} · {cohort.incomeBand} cohort
+            <InfoTip text="Each bar shows your value and its percentile vs people in your age × income group. 70th percentile means you're doing better than 70% of that cohort. Debt-to-Income is inverted — lower is better." />
+          </h2>
+          <span className="text-xs text-muted-foreground">Percentiles from CFPB FWB survey</span>
         </div>
       </section>
 
@@ -98,7 +121,7 @@ function Dashboard() {
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Monthly cash flow</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Monthly cash flow <InfoTip text="Income at the top, then everything that leaves — expenses, EMIs, and money you send to savings/investments. The bottom row is what's left unassigned." /></h2>
             <span className={"text-sm font-medium " + (metrics.monthlyCashflow >= 0 ? "text-[color:var(--success)]" : "text-destructive")}>
               {metrics.monthlyCashflow >= 0 ? "Surplus" : "Deficit"}: {formatCurrency(Math.abs(metrics.monthlyCashflow), cur)}
             </span>
@@ -115,7 +138,7 @@ function Dashboard() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Expense mix</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Expense mix <InfoTip text="Each slice is one recurring category you entered. Use it to spot the 1–2 categories worth trimming for the biggest impact." /></h2>
           <div className="mt-4 h-56">
             {expensePie.length === 0 ? (
               <EmptyChart text="Add expenses on the Profile page" />
@@ -137,7 +160,7 @@ function Dashboard() {
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">20-year projection</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">20-year projection <InfoTip text="Compounds your investing rate at expected returns, adjusts for inflation, and pays down loans on schedule. A directional forecast — use the Simulator to test what-ifs." /></h2>
             <Link to="/app/simulator" className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:text-gold">
               Run a scenario <ArrowRight className="h-3 w-3" />
             </Link>
@@ -168,7 +191,7 @@ function Dashboard() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Asset composition</h2>
+          <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Asset composition <InfoTip text="How your total assets split between cash and investments. Too much cash = inflation eats it; too little = no safety net." /></h2>
           <div className="mt-4 h-56">
             {netWorthMix.every((n) => n.value === 0) ? (
               <EmptyChart text="No assets recorded yet" />
@@ -260,14 +283,16 @@ function PercentileBar({ label, value, ptiles, suffix = "", invert }: { label: s
   );
 }
 
-function MetricCard({ icon, label, value, hint, positive }: { icon: React.ReactNode; label: string; value: string; hint: string; positive: boolean }) {
+function MetricCard({ icon, label, value, hint, positive, tip }: { icon: React.ReactNode; label: string; value: string; hint: string; positive: boolean; tip?: string }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-soft transition-transform hover:-translate-y-0.5">
       <div className="flex items-center justify-between">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary [&>svg]:h-4 [&>svg]:w-4">{icon}</div>
         {positive ? <TrendingUp className="h-4 w-4 text-[color:var(--success)]" /> : <TrendingDown className="h-4 w-4 text-destructive" />}
       </div>
-      <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-4 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {label}{tip && <InfoTip text={tip} />}
+      </p>
       <p className="mt-1 font-serif text-3xl text-primary">{value}</p>
       <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
     </div>
@@ -294,7 +319,7 @@ function HealthScoreCard({ score, drivers }: { score: number; drivers: { label: 
   return (
     <div className="rounded-2xl bg-gradient-hero p-6 text-primary-foreground shadow-elegant">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium uppercase tracking-widest text-gold">Financial Health Score</p>
+        <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-gold">Financial Health Score <InfoTip text="A 0–100 score predicted by an ML model trained on the CFPB Financial Well-Being Survey. Combines savings, debt, emergency cushion, net worth and investing rate. 80+ Excellent · 65–79 Strong · 50–64 Fair." /></p>
         <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-gold">
           <Brain className="h-3 w-3" /> ML · v{MODEL_VERSION}
         </span>
