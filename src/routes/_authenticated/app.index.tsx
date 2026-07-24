@@ -283,14 +283,16 @@ function PercentileBar({ label, value, ptiles, suffix = "", invert }: { label: s
   );
 }
 
-function MetricCard({ icon, label, value, hint, positive }: { icon: React.ReactNode; label: string; value: string; hint: string; positive: boolean }) {
+function MetricCard({ icon, label, value, hint, positive, tip }: { icon: React.ReactNode; label: string; value: string; hint: string; positive: boolean; tip?: string }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-soft transition-transform hover:-translate-y-0.5">
       <div className="flex items-center justify-between">
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary [&>svg]:h-4 [&>svg]:w-4">{icon}</div>
         {positive ? <TrendingUp className="h-4 w-4 text-[color:var(--success)]" /> : <TrendingDown className="h-4 w-4 text-destructive" />}
       </div>
-      <p className="mt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-4 flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {label}{tip && <InfoTip text={tip} />}
+      </p>
       <p className="mt-1 font-serif text-3xl text-primary">{value}</p>
       <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
     </div>
