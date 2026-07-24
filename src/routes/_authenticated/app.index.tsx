@@ -121,7 +121,7 @@ function Dashboard() {
       <section className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-soft lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Monthly cash flow</h2>
+            <h2 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Monthly cash flow <InfoTip text="Income at the top, then everything that leaves — expenses, EMIs, and money you send to savings/investments. The bottom row is what's left unassigned." /></h2>
             <span className={"text-sm font-medium " + (metrics.monthlyCashflow >= 0 ? "text-[color:var(--success)]" : "text-destructive")}>
               {metrics.monthlyCashflow >= 0 ? "Surplus" : "Deficit"}: {formatCurrency(Math.abs(metrics.monthlyCashflow), cur)}
             </span>
