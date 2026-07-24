@@ -319,7 +319,7 @@ function HealthScoreCard({ score, drivers }: { score: number; drivers: { label: 
   return (
     <div className="rounded-2xl bg-gradient-hero p-6 text-primary-foreground shadow-elegant">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium uppercase tracking-widest text-gold">Financial Health Score</p>
+        <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-gold">Financial Health Score <InfoTip text="A 0–100 score predicted by an ML model trained on the CFPB Financial Well-Being Survey. Combines savings, debt, emergency cushion, net worth and investing rate. 80+ Excellent · 65–79 Strong · 50–64 Fair." /></p>
         <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-medium text-gold">
           <Brain className="h-3 w-3" /> ML · v{MODEL_VERSION}
         </span>
