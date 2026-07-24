@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, LineChart, Sparkles, Target, Shield, Wand2, FileText, Brain } from "lucide-react";
+import { ArrowRight, LineChart, Sparkles, Target, Shield, Wand2, FileText, Brain, Sun, Moon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useTheme } from "@/hooks/useTheme";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,12 +37,13 @@ function Landing() {
 }
 
 function Nav({ signedIn }: { signedIn: boolean | null }) {
+  const { isDark, toggle } = useTheme();
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero shadow-soft">
-            <span className="font-serif text-lg text-gold">F</span>
+            <span className="font-serif text-sm tracking-tight text-gold">ft.</span>
           </div>
           <span className="font-serif text-2xl tracking-tight text-primary">FinTwin</span>
         </Link>
@@ -49,26 +51,35 @@ function Nav({ signedIn }: { signedIn: boolean | null }) {
           <a href="#features" className="hover:text-primary">Features</a>
           <a href="#model" className="hover:text-primary">How it scores</a>
         </nav>
-        {signedIn ? (
-          <Link
-            to="/app"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:shadow-elegant"
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggle}
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-primary"
           >
-            Open dashboard <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link to="/auth" className="hidden rounded-full px-3 py-2 text-sm font-medium text-primary hover:bg-accent md:inline-flex">
-              Sign in
-            </Link>
+            {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
+          {signedIn ? (
             <Link
-              to="/auth"
+              to="/app"
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:shadow-elegant"
             >
-              Get started <ArrowRight className="h-3.5 w-3.5" />
+              Open dashboard <ArrowRight className="h-3.5 w-3.5" />
             </Link>
-          </div>
-        )}
+          ) : (
+            <>
+              <Link to="/auth" className="hidden rounded-full px-3 py-2 text-sm font-medium text-primary hover:bg-accent md:inline-flex">
+                Sign in
+              </Link>
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-soft hover:shadow-elegant"
+              >
+                Get started <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

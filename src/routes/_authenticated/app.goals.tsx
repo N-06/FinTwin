@@ -22,8 +22,8 @@ function Goals() {
   const add = () => {
     const g: Goal = {
       id: `g_${Date.now().toString(36)}`,
-      name: "New goal",
-      targetAmount: 500000,
+      name: "",
+      targetAmount: 0,
       targetYear: new Date().getFullYear() + 5,
       saved: 0,
     };
@@ -59,8 +59,9 @@ function Goals() {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <input
                   value={g.name}
+                  placeholder="Goal name"
                   onChange={(e) => patch(g.id, { name: e.target.value })}
-                  className="min-w-0 flex-1 border-none bg-transparent font-serif text-2xl text-primary focus:outline-none"
+                  className="min-w-0 flex-1 border-none bg-transparent font-serif text-2xl text-primary placeholder:text-muted-foreground/50 focus:outline-none"
                 />
                 <button
                   onClick={() => remove(g.id)}
@@ -106,7 +107,8 @@ function NumField({ label, value, onChange, step = 10000 }: { label: string; val
       <input
         type="number"
         step={step}
-        value={value}
+        value={value === 0 ? "" : value}
+        placeholder="0"
         onChange={(e) => onChange(Number(e.target.value) || 0)}
         className="mt-1.5 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30"
       />

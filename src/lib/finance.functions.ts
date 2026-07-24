@@ -14,6 +14,8 @@ export const loadProfile = createServerFn({ method: "GET" })
       supabase.from("loans").select("*").eq("user_id", userId).order("created_at"),
       supabase.from("goals").select("*").eq("user_id", userId).order("created_at"),
     ]);
+    // Strip old default placeholder strings so they show as blank inputs with placeholders
+    const OLD_DEFAULTS = new Set(["New investment", "New loan", "New goal", "New expense"]);
     return {
       ...EMPTY_PROFILE,
       name: p.data?.name ?? "",
@@ -26,15 +28,30 @@ export const loadProfile = createServerFn({ method: "GET" })
       savings: Number(f.data?.savings ?? 0),
       emergencyFund: Number(f.data?.emergency_fund ?? 0),
       monthlyContribution: Number(f.data?.monthly_contribution ?? 0),
-      expenses: (ex.data ?? []).map((r) => ({ id: r.id, category: r.category, amount: Number(r.amount) })),
+      expenses: (ex.data ?? []).map((r) => ({
+        id: r.id,
+        category: OLD_DEFAULTS.has(r.category) ? "" : r.category,
+        amount: Number(r.amount),
+      })),
       investments: (inv.data ?? []).map((r) => ({
-        id: r.id, name: r.name, amount: Number(r.amount), expectedReturn: Number(r.expected_return),
+        id: r.id,
+        name: OLD_DEFAULTS.has(r.name) ? "" : r.name,
+        amount: Number(r.amount),
+        expectedReturn: Number(r.expected_return),
       })),
       loans: (ln.data ?? []).map((r) => ({
-        id: r.id, name: r.name, balance: Number(r.balance), emi: Number(r.emi), interestRate: Number(r.interest_rate),
+        id: r.id,
+        name: OLD_DEFAULTS.has(r.name) ? "" : r.name,
+        balance: Number(r.balance),
+        emi: Number(r.emi),
+        interestRate: Number(r.interest_rate),
       })),
       goals: (g.data ?? []).map((r) => ({
-        id: r.id, name: r.name, targetAmount: Number(r.target_amount), targetYear: r.target_year, saved: Number(r.saved),
+        id: r.id,
+        name: OLD_DEFAULTS.has(r.name) ? "" : r.name,
+        targetAmount: Number(r.target_amount),
+        targetYear: r.target_year,
+        saved: Number(r.saved),
       })),
     };
   });

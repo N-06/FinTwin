@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Wand2, Target, Sparkles, User, FileText, BookOpen } from "lucide-react";
+import { LayoutDashboard, Wand2, Target, Sparkles, User, FileText, BookOpen, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 export const Route = createFileRoute("/_authenticated/app")({
   head: () => ({
@@ -24,6 +25,19 @@ const nav: NavItem[] = [
   { to: "/app/report", label: "Report", icon: FileText },
 ];
 
+function ThemeToggle() {
+  const { isDark, toggle } = useTheme();
+  return (
+    <button
+      onClick={toggle}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-accent hover:text-primary"
+    >
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </button>
+  );
+}
+
 function AppLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   return (
@@ -31,7 +45,7 @@ function AppLayout() {
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-gradient-surface md:flex">
         <Link to="/" className="flex items-center gap-2 px-6 py-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero">
-            <span className="font-serif text-lg text-gold">F</span>
+            <span className="font-serif text-sm tracking-tight text-gold">ft.</span>
           </div>
           <span className="font-serif text-2xl text-primary">FinTwin</span>
         </Link>
@@ -56,14 +70,20 @@ function AppLayout() {
           })}
         </nav>
         <div className="mt-auto p-4">
-          <div className="rounded-xl bg-gradient-hero p-4 text-primary-foreground">
-            <p className="text-xs uppercase tracking-widest text-gold">Tip</p>
-            <p className="mt-1 text-sm">All data lives in your browser. No account needed.</p>
+          <div className="rounded-xl bg-gradient-hero p-4">
+            {/* <p className="text-xs uppercase tracking-widest text-gold"></p> */}
+            <p className="mt-1 text-sm text-white/80">All data lives in your browser. No account needed.</p>
           </div>
         </div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
-        <MobileNav pathname={pathname} />
+        {/* Top header — visible on all screen sizes, toggle pinned top-right */}
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur">
+          <MobileNav pathname={pathname} />
+          <span className="md:hidden font-serif text-lg text-primary">FinTwin</span>
+          <span className="hidden md:block" />
+          <ThemeToggle />
+        </header>
         <main className="flex-1 overflow-x-hidden">
           <Outlet />
         </main>
@@ -74,7 +94,7 @@ function AppLayout() {
 
 function MobileNav({ pathname }: { pathname: string }) {
   return (
-    <div className="sticky top-0 z-30 flex items-center gap-1 overflow-x-auto border-b border-border bg-background/95 px-3 py-2 backdrop-blur md:hidden">
+    <div className="flex flex-1 items-center gap-1 overflow-x-auto md:hidden">
       {nav.map((n) => {
         const active = n.exact ? pathname === n.to : pathname.startsWith(n.to);
         return (

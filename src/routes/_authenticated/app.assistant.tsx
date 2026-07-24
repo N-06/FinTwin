@@ -90,7 +90,7 @@ function EmptyState({ onNew }: { onNew: () => void }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-hero shadow-elegant">
-        <span className="font-serif text-2xl text-gold">F</span>
+        <span className="font-serif text-lg tracking-tight text-gold">ft.</span>
       </div>
       <h2 className="mt-5 font-serif text-3xl text-primary">Ask your financial twin</h2>
       <p className="mt-2 max-w-md text-sm text-muted-foreground">

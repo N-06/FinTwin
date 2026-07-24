@@ -56,13 +56,13 @@ function Profile() {
 
       <Section title="Expenses (monthly)" action={
         <AddButton onClick={() =>
-          update((p) => ({ ...p, expenses: [...p.expenses, { id: `e_${Date.now()}`, category: "New expense", amount: 1000 }] }))
+          update((p) => ({ ...p, expenses: [...p.expenses, { id: `e_${Date.now()}`, category: "", amount: 0 }] }))
         } />
       }>
         <div className="space-y-2">
           {profile.expenses.map((e) => (
             <ListRow key={e.id} onDelete={() => update((p) => ({ ...p, expenses: p.expenses.filter((x) => x.id !== e.id) }))}>
-              <TxtField compact value={e.category} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, category: v } as Expense : x) }))} />
+              <TxtField compact placeholder="Expense name" value={e.category} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, category: v } as Expense : x) }))} />
               <NumField compact value={e.amount} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, amount: v } as Expense : x) }))} />
             </ListRow>
           ))}
@@ -82,13 +82,13 @@ function Profile() {
 
       <Section title="Investments" action={
         <AddButton onClick={() =>
-          update((p) => ({ ...p, investments: [...p.investments, { id: `i_${Date.now()}`, name: "New investment", amount: 10000, expectedReturn: 10 }] }))
+          update((p) => ({ ...p, investments: [...p.investments, { id: `i_${Date.now()}`, name: "", amount: 0, expectedReturn: 0 }] }))
         } />
       }>
         <div className="space-y-2">
           {profile.investments.map((i) => (
             <ListRow key={i.id} onDelete={() => update((p) => ({ ...p, investments: p.investments.filter((x) => x.id !== i.id) }))}>
-              <TxtField compact value={i.name} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, name: v } as Investment : x) }))} />
+              <TxtField compact placeholder="Investment name" value={i.name} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, name: v } as Investment : x) }))} />
               <NumField compact value={i.amount} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, amount: v } as Investment : x) }))} />
               <NumField compact value={i.expectedReturn} step={0.5} suffix="%" onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, expectedReturn: v } as Investment : x) }))} />
             </ListRow>
@@ -98,13 +98,13 @@ function Profile() {
 
       <Section title="Loans" action={
         <AddButton onClick={() =>
-          update((p) => ({ ...p, loans: [...p.loans, { id: `l_${Date.now()}`, name: "New loan", balance: 100000, emi: 5000, interestRate: 10 }] }))
+          update((p) => ({ ...p, loans: [...p.loans, { id: `l_${Date.now()}`, name: "", balance: 0, emi: 0, interestRate: 0 }] }))
         } />
       }>
         <div className="space-y-2">
           {profile.loans.map((l) => (
             <ListRow key={l.id} onDelete={() => update((p) => ({ ...p, loans: p.loans.filter((x) => x.id !== l.id) }))}>
-              <TxtField compact value={l.name} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, name: v } as Loan : x) }))} />
+              <TxtField compact placeholder="Loan name" value={l.name} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, name: v } as Loan : x) }))} />
               <NumField compact value={l.balance} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, balance: v } as Loan : x) }))} />
               <NumField compact value={l.emi} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, emi: v } as Loan : x) }))} />
               <NumField compact value={l.interestRate} step={0.25} suffix="%" onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, interestRate: v } as Loan : x) }))} />
@@ -154,13 +154,14 @@ function ListRow({ children, onDelete }: { children: React.ReactNode; onDelete: 
   );
 }
 
-function TxtField({ label, value, onChange, compact }: { label?: string; value: string; onChange: (v: string) => void; compact?: boolean }) {
+function TxtField({ label, value, onChange, compact, placeholder }: { label?: string; value: string; onChange: (v: string) => void; compact?: boolean; placeholder?: string }) {
   return (
     <label className="block">
       {label && <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>}
       <input
         type="text"
         value={value}
+        placeholder={placeholder ?? ""}
         onChange={(e) => onChange(e.target.value)}
         className={
           (label ? "mt-1.5 " : "") +
@@ -180,7 +181,8 @@ function NumField({ label, value, onChange, step = 1000, compact, suffix }: { la
         <input
           type="number"
           step={step}
-          value={value}
+          value={value === 0 ? "" : value}
+          placeholder="0"
           onChange={(e) => onChange(Number(e.target.value) || 0)}
           className={
             (label ? "mt-1.5 " : "") +

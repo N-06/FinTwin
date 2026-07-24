@@ -1,7 +1,8 @@
 import { createFileRoute, redirect, useNavigate, useSearch, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Sparkles, ArrowRight, Loader2 } from "lucide-react";
+import { Sparkles, ArrowRight, Loader2, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 import { z } from "zod";
 
 const searchSchema = z.object({ next: z.string().optional() });
@@ -74,12 +75,21 @@ function AuthPage() {
     }
   };
 
+  const { isDark, toggle } = useTheme();
   return (
     <div className="min-h-screen bg-gradient-surface">
+      {/* Theme toggle — fixed top-right */}
+      <button
+        onClick={toggle}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/80 text-muted-foreground backdrop-blur transition-colors hover:bg-accent hover:text-primary"
+      >
+        {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      </button>
       <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-12">
         <Link to="/" className="mb-8 flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero shadow-soft">
-            <span className="font-serif text-lg text-gold">F</span>
+            <span className="font-serif text-sm tracking-tight text-gold">ft.</span>
           </div>
           <span className="font-serif text-2xl text-primary">FinTwin</span>
         </Link>

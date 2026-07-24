@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useProfile, formatCurrency } from "@/lib/finance-store";
 import type { FinanceProfile } from "@/lib/finance-types";
-import { ArrowRight, ArrowLeft, Plus, Trash2, Check, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowLeft, Plus, Trash2, Check, Sparkles, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 export const Route = createFileRoute("/_authenticated/app/onboarding")({
   head: () => ({
@@ -22,6 +23,7 @@ function Onboarding() {
   const [profile, update] = useProfile();
   const [step, setStep] = useState(0);
   const navigate = useNavigate();
+  const { isDark, toggle } = useTheme();
 
   const finish = () => {
     update((p) => ({ ...p, onboardingComplete: true }));
@@ -30,6 +32,14 @@ function Onboarding() {
 
   return (
     <div className="min-h-screen bg-gradient-surface">
+      {/* Theme toggle — fixed top-right */}
+      <button
+        onClick={toggle}
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+        className="fixed right-4 top-4 z-50 flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/80 text-muted-foreground backdrop-blur transition-colors hover:bg-accent hover:text-primary"
+      >
+        {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      </button>
       <div className="mx-auto max-w-3xl px-6 py-10">
         <header>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-gold/40 bg-accent/50 px-3 py-1 text-xs font-medium text-primary">
@@ -86,8 +96,7 @@ function Onboarding() {
           ) : (
             <button
               onClick={finish}
-              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-hero px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-elegant"
-            >
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-hero px-6 py-2.5 text-sm font-medium text-white shadow-elegant">
               <Check className="h-3.5 w-3.5 text-gold" /> Finish & open dashboard
             </button>
           )}

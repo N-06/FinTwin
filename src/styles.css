@@ -91,69 +91,118 @@
 }
 
 .dark {
-  --background: oklch(0.14 0.03 260);
-  --foreground: oklch(0.97 0.005 85);
-  --card: oklch(0.19 0.04 260);
-  --card-foreground: oklch(0.97 0.005 85);
-  --popover: oklch(0.19 0.04 260);
-  --popover-foreground: oklch(0.97 0.005 85);
-  --primary: oklch(0.78 0.14 82);
-  --primary-foreground: oklch(0.15 0.04 260);
-  --secondary: oklch(0.25 0.05 260);
-  --secondary-foreground: oklch(0.97 0.005 85);
-  --muted: oklch(0.24 0.04 260);
-  --muted-foreground: oklch(0.72 0.02 260);
-  --accent: oklch(0.30 0.06 262);
-  --accent-foreground: oklch(0.97 0.005 85);
-  --border: oklch(0.30 0.04 260);
-  --input: oklch(0.30 0.04 260);
-  --ring: oklch(0.78 0.14 82);
+  /* Navy Blue - Main Background */
+  --background: oklch(0.16 0.04 260);
+
+  /* Beige - General Text */
+  --foreground: oklch(0.92 0.02 85);
+
+  /* Deep Matte Purple - Card Backgrounds */
+  --card: oklch(0.22 0.05 315);
+  --card-foreground: oklch(0.92 0.02 85);
+  --popover: oklch(0.22 0.05 315);
+  --popover-foreground: oklch(0.92 0.02 85);
+
+  /* Beige - Primary interactive elements & text */
+  --primary: oklch(0.85 0.06 85);
+  --primary-foreground: oklch(0.16 0.04 260);
+  --gold: oklch(0.85 0.06 85);
+  /* Ensures gradients using gold map to beige in dark mode */
+
+  /* Deep Matte Purple - Interactive accents */
+  --secondary: oklch(0.28 0.06 315);
+  --secondary-foreground: oklch(0.92 0.02 85);
+  --accent: oklch(0.28 0.06 315);
+  --accent-foreground: oklch(0.92 0.02 85);
+
+  /* Dark Grey - Borders, structural dividers, and muted text */
+  --muted: oklch(0.22 0.01 260);
+  --muted-foreground: oklch(0.70 0.02 260);
+  --border: oklch(0.28 0.01 260);
+  --input: oklch(0.28 0.01 260);
+
+  /* Beige - Focus rings */
+  --ring: oklch(0.85 0.06 85);
+
+  /* Override gradients for dark mode blending Navy Blue and Deep Matte Purple */
+  --gradient-surface: linear-gradient(180deg, oklch(0.16 0.04 260) 0%, oklch(0.20 0.05 315) 100%);
+  --gradient-hero: linear-gradient(135deg, oklch(0.28 0.06 315) 0%, oklch(0.18 0.04 260) 60%, oklch(0.14 0.03 260) 100%);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-feature-settings: "cv11", "ss01", "ss03";
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3 {
+
+  h1,
+  h2,
+  h3 {
     letter-spacing: -0.02em;
+  }
+
+  /* Grey placeholder text that disappears on input */
+  ::placeholder {
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.4;
   }
 }
 
 @utility text-gold {
   color: var(--gold);
 }
+
 @utility bg-gradient-hero {
   background-image: var(--gradient-hero);
 }
+
 @utility bg-gradient-gold {
   background-image: var(--gradient-gold);
 }
+
 @utility bg-gradient-surface {
   background-image: var(--gradient-surface);
 }
+
 @utility shadow-elegant {
   box-shadow: var(--shadow-elegant);
 }
+
 @utility shadow-soft {
   box-shadow: var(--shadow-soft);
 }
+
 @utility shadow-gold {
   box-shadow: var(--shadow-gold);
 }
+
 @utility font-serif {
   font-family: var(--font-serif);
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
+
 @utility animate-float {
   animation: float-slow 6s ease-in-out infinite;
 }

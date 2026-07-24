@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
-import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
 type ChatBody = {
   messages?: unknown;
@@ -16,11 +16,11 @@ export const Route = createFileRoute("/api/chat")({
         if (!Array.isArray(body.messages)) {
           return new Response("Messages required", { status: 400 });
         }
-        const key = process.env.LOVABLE_API_KEY;
-        if (!key) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+        const key = process.env.GEMINI_API_KEY;
+        if (!key) return new Response("Missing GEMINI_API_KEY", { status: 500 });
 
-        const gateway = createLovableAiGatewayProvider(key);
-        const model = gateway("google/gemini-3.6-flash");
+        const google = createGoogleGenerativeAI({ apiKey: key });
+        const model = google("gemini-1.5-flash");
 
         const system = `You are FinTwin AI, a warm, precise personal-finance assistant.
 You help users understand their financial situation and improve it.
@@ -40,7 +40,7 @@ When the user describes a financial decision (e.g. "should I buy a car?"), evalu
 
         try {
           const result = streamText({
-            model,
+            model: model as any,
             system,
             messages: convertToModelMessages(body.messages as UIMessage[]),
           });

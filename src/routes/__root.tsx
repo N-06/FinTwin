@@ -104,6 +104,19 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Inline script: apply dark class before first paint to prevent FOUC */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+(function(){
+  try {
+    var t = localStorage.getItem('fintwin-theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (t === 'dark' || (!t && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    }
+  } catch(e) {}
+})();
+        `}} />
       </head>
       <body style={{ fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif" }}>
         {children}
