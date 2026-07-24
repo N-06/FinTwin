@@ -103,11 +103,19 @@ function StepYou({ profile, update }: { profile: FinanceProfile; update: Updater
   return (
     <div>
       <h2 className="font-serif text-2xl text-primary">About you</h2>
-      <p className="mt-1 text-sm text-muted-foreground">A few basics to personalize your twin.</p>
+      <p className="mt-1 text-sm text-muted-foreground">A few basics we use to personalize your twin and benchmark you against a similar cohort.</p>
       <div className="mt-5 grid gap-4 md:grid-cols-3">
-        <Txt label="Name" value={profile.name} onChange={(v) => update((p) => ({ ...p, name: v }))} placeholder="Alex" />
-        <Num label="Age" value={profile.age} step={1} onChange={(v) => update((p) => ({ ...p, age: v }))} />
-        <Num label="Inflation assumption (%)" value={profile.inflationRate} step={0.5} onChange={(v) => update((p) => ({ ...p, inflationRate: v }))} />
+        <Txt label="Name" value={profile.name} onChange={(v) => update((p) => ({ ...p, name: v }))}
+          placeholder="e.g. Alex Kumar"
+          help="How you'd like the app to greet you. Only visible to you." />
+        <Num label="Age" value={profile.age} step={1} min={0}
+          onChange={(v) => update((p) => ({ ...p, age: v }))}
+          placeholder="e.g. 28"
+          help="Used to compare you to the right age cohort in benchmarks." />
+        <Num label="Inflation assumption" value={profile.inflationRate} step={0.5} suffix="%"
+          onChange={(v) => update((p) => ({ ...p, inflationRate: v }))}
+          placeholder="e.g. 6"
+          help="Expected yearly rise in prices. India ~6%, US ~3%. Used in long-term projections." />
       </div>
     </div>
   );
@@ -117,10 +125,16 @@ function StepIncome({ profile, update }: { profile: FinanceProfile; update: Upda
   return (
     <div>
       <h2 className="font-serif text-2xl text-primary">Monthly income</h2>
-      <p className="mt-1 text-sm text-muted-foreground">Enter what actually hits your account each month.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Enter what actually lands in your account each month — after tax, not gross.</p>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        <Num label="Salary (take-home)" value={profile.monthlyIncome} onChange={(v) => update((p) => ({ ...p, monthlyIncome: v }))} />
-        <Num label="Other income (rent, freelance…)" value={profile.otherIncome} onChange={(v) => update((p) => ({ ...p, otherIncome: v }))} />
+        <Num label="Salary (take-home)" value={profile.monthlyIncome}
+          onChange={(v) => update((p) => ({ ...p, monthlyIncome: v }))}
+          placeholder="e.g. 80000"
+          help="Your net monthly salary after tax and PF deductions." />
+        <Num label="Other income" value={profile.otherIncome}
+          onChange={(v) => update((p) => ({ ...p, otherIncome: v }))}
+          placeholder="e.g. 15000"
+          help="Rent received, freelance, dividends, side hustle. Enter 0 if none." />
       </div>
     </div>
   );
@@ -132,16 +146,16 @@ function StepExpenses({ profile, update }: { profile: FinanceProfile; update: Up
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-serif text-2xl text-primary">Monthly expenses</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Add each recurring category with the rough monthly amount.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Add each recurring category with its rough monthly amount. Category name on the left, rupees on the right.</p>
         </div>
         <AddBtn onClick={() => update((p) => ({ ...p, expenses: [...p.expenses, { id: `e_${Date.now()}`, category: "", amount: 0 }] }))} />
       </div>
       <div className="mt-4 space-y-2">
-        {profile.expenses.length === 0 && <EmptyHint text="No expenses yet — add rent, food, transport, etc." />}
+        {profile.expenses.length === 0 && <EmptyHint text="Tap +Add to start. Common ones: Rent, Groceries, Transport, Utilities, Subscriptions, Dining out." />}
         {profile.expenses.map((e) => (
           <RowShell key={e.id} onDelete={() => update((p) => ({ ...p, expenses: p.expenses.filter((x) => x.id !== e.id) }))}>
-            <Txt compact placeholder="Category (e.g. Rent)" value={e.category} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, category: v } : x) }))} />
-            <Num compact value={e.amount} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, amount: v } : x) }))} />
+            <Txt compact placeholder="Category — e.g. Rent" value={e.category} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, category: v } : x) }))} />
+            <Num compact placeholder="Amount / month" value={e.amount} onChange={(v) => update((p) => ({ ...p, expenses: p.expenses.map((x) => x.id === e.id ? { ...x, amount: v } : x) }))} />
           </RowShell>
         ))}
       </div>
@@ -156,23 +170,32 @@ function StepSavings({ profile, update }: { profile: FinanceProfile; update: Upd
   return (
     <div>
       <h2 className="font-serif text-2xl text-primary">Savings & investments</h2>
-      <p className="mt-1 text-sm text-muted-foreground">Where your money lives today.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Where your money lives today, and how much you keep adding each month.</p>
       <div className="mt-5 grid gap-4 md:grid-cols-3">
-        <Num label="Liquid savings" value={profile.savings} onChange={(v) => update((p) => ({ ...p, savings: v }))} />
-        <Num label="Emergency fund" value={profile.emergencyFund} onChange={(v) => update((p) => ({ ...p, emergencyFund: v }))} />
-        <Num label="Monthly investing / saving" value={profile.monthlyContribution} onChange={(v) => update((p) => ({ ...p, monthlyContribution: v }))} />
+        <Num label="Liquid savings" value={profile.savings} onChange={(v) => update((p) => ({ ...p, savings: v }))}
+          placeholder="e.g. 150000"
+          help="Cash in savings/checking accounts you can spend immediately. Do not include your emergency fund." />
+        <Num label="Emergency fund" value={profile.emergencyFund} onChange={(v) => update((p) => ({ ...p, emergencyFund: v }))}
+          placeholder="e.g. 200000"
+          help="Money set aside only for emergencies — kept in a safe, liquid account. Aim for 3–6 months of expenses." />
+        <Num label="Monthly investing / saving" value={profile.monthlyContribution} onChange={(v) => update((p) => ({ ...p, monthlyContribution: v }))}
+          placeholder="e.g. 20000"
+          help="Total you put into SIPs, stocks, PF, RDs, etc. every month." />
       </div>
       <div className="mt-6 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Investment accounts</h3>
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Investment accounts</h3>
+          <p className="mt-1 text-xs text-muted-foreground">Name · current value · expected annual return (%). Skip if you have none.</p>
+        </div>
         <AddBtn onClick={() => update((p) => ({ ...p, investments: [...p.investments, { id: `i_${Date.now()}`, name: "", amount: 0, expectedReturn: 10 }] }))} />
       </div>
       <div className="mt-3 space-y-2">
-        {profile.investments.length === 0 && <EmptyHint text="Add mutual funds, stocks, PF, etc. Skip if none." />}
+        {profile.investments.length === 0 && <EmptyHint text="Common: Mutual Funds (~12%), Stocks (~13%), PF/EPF (~8%), Fixed Deposits (~7%)." />}
         {profile.investments.map((i) => (
           <RowShell key={i.id} onDelete={() => update((p) => ({ ...p, investments: p.investments.filter((x) => x.id !== i.id) }))}>
-            <Txt compact placeholder="Name (e.g. Mutual Funds)" value={i.name} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, name: v } : x) }))} />
-            <Num compact value={i.amount} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, amount: v } : x) }))} />
-            <Num compact value={i.expectedReturn} step={0.5} suffix="%" onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, expectedReturn: v } : x) }))} />
+            <Txt compact placeholder="Name — e.g. Mutual Funds" value={i.name} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, name: v } : x) }))} />
+            <Num compact placeholder="Current value" value={i.amount} onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, amount: v } : x) }))} />
+            <Num compact placeholder="Return" value={i.expectedReturn} step={0.5} suffix="%" onChange={(v) => update((p) => ({ ...p, investments: p.investments.map((x) => x.id === i.id ? { ...x, expectedReturn: v } : x) }))} />
           </RowShell>
         ))}
       </div>
@@ -186,18 +209,18 @@ function StepLoans({ profile, update }: { profile: FinanceProfile; update: Updat
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-serif text-2xl text-primary">Loans</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Skip this step if you have none.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Name · outstanding balance · monthly EMI · interest rate (%). Skip if you have none.</p>
         </div>
         <AddBtn onClick={() => update((p) => ({ ...p, loans: [...p.loans, { id: `l_${Date.now()}`, name: "", balance: 0, emi: 0, interestRate: 10 }] }))} />
       </div>
       <div className="mt-4 space-y-2">
-        {profile.loans.length === 0 && <EmptyHint text="No loans — nothing to add." />}
+        {profile.loans.length === 0 && <EmptyHint text="Common: Home loan, Car loan, Personal loan, Education loan, Credit card debt." />}
         {profile.loans.map((l) => (
           <RowShell key={l.id} onDelete={() => update((p) => ({ ...p, loans: p.loans.filter((x) => x.id !== l.id) }))}>
-            <Txt compact placeholder="Name (e.g. Home loan)" value={l.name} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, name: v } : x) }))} />
-            <Num compact value={l.balance} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, balance: v } : x) }))} />
-            <Num compact value={l.emi} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, emi: v } : x) }))} />
-            <Num compact value={l.interestRate} step={0.25} suffix="%" onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, interestRate: v } : x) }))} />
+            <Txt compact placeholder="Name — e.g. Home loan" value={l.name} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, name: v } : x) }))} />
+            <Num compact placeholder="Balance left" value={l.balance} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, balance: v } : x) }))} />
+            <Num compact placeholder="EMI / month" value={l.emi} onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, emi: v } : x) }))} />
+            <Num compact placeholder="Rate" value={l.interestRate} step={0.25} suffix="%" onChange={(v) => update((p) => ({ ...p, loans: p.loans.map((x) => x.id === l.id ? { ...x, interestRate: v } : x) }))} />
           </RowShell>
         ))}
       </div>
@@ -211,18 +234,18 @@ function StepGoals({ profile, update }: { profile: FinanceProfile; update: Updat
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-serif text-2xl text-primary">Goals</h2>
-          <p className="mt-1 text-sm text-muted-foreground">A home, retirement, a sabbatical — anything you're saving toward.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Goal name · target amount · target year · already saved. Even rough numbers help the AI plan.</p>
         </div>
         <AddBtn onClick={() => update((p) => ({ ...p, goals: [...p.goals, { id: `g_${Date.now()}`, name: "", targetAmount: 0, targetYear: new Date().getFullYear() + 5, saved: 0 }] }))} />
       </div>
       <div className="mt-4 space-y-2">
-        {profile.goals.length === 0 && <EmptyHint text="Add at least one — even a rough target helps the AI." />}
+        {profile.goals.length === 0 && <EmptyHint text="Examples: Buy a home, Retirement, Kid's education, Emergency fund top-up, Sabbatical." />}
         {profile.goals.map((g) => (
           <RowShell key={g.id} onDelete={() => update((p) => ({ ...p, goals: p.goals.filter((x) => x.id !== g.id) }))}>
-            <Txt compact placeholder="Goal (e.g. Buy a home)" value={g.name} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, name: v } : x) }))} />
-            <Num compact value={g.targetAmount} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, targetAmount: v } : x) }))} />
-            <Num compact value={g.targetYear} step={1} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, targetYear: v } : x) }))} />
-            <Num compact value={g.saved} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, saved: v } : x) }))} />
+            <Txt compact placeholder="Goal — e.g. Buy a home" value={g.name} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, name: v } : x) }))} />
+            <Num compact placeholder="Target amount" value={g.targetAmount} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, targetAmount: v } : x) }))} />
+            <Num compact placeholder="Target year" value={g.targetYear} step={1} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, targetYear: v } : x) }))} />
+            <Num compact placeholder="Saved so far" value={g.saved} onChange={(v) => update((p) => ({ ...p, goals: p.goals.map((x) => x.id === g.id ? { ...x, saved: v } : x) }))} />
           </RowShell>
         ))}
       </div>
