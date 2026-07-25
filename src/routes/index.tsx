@@ -156,7 +156,7 @@ function ModelStrip() {
   return (
     <section id="model" className="border-t border-border/60 py-20">
       <div className="mx-auto max-w-4xl px-6">
-        <div className="rounded-3xl bg-gradient-hero p-10 text-primary-foreground shadow-elegant">
+        <div className="rounded-3xl bg-gradient-hero p-10 text-primary-foreground dark:text-primary shadow-elegant">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold/20">
               <Brain className="h-5 w-5 text-gold" />
@@ -166,19 +166,19 @@ function ModelStrip() {
           <h2 className="mt-4 font-serif text-3xl md:text-4xl">
             Trained on real survey data, scored in your browser.
           </h2>
-          <p className="mt-4 text-primary-foreground/80">
+          <p className="mt-4 text-primary-foreground/80 dark:text-primary/80">
             Your Financial Health Score is produced by a gradient-boosted regressor trained on the
             CFPB Financial Well-Being Survey (~6,400 U.S. adults), then distilled into a compact
             model that runs offline in your browser. No numbers leave your device to be scored.
           </p>
-          <ul className="mt-6 grid gap-3 text-sm text-primary-foreground/80 sm:grid-cols-2">
+          <ul className="mt-6 grid gap-3 text-sm text-primary-foreground/80 dark:text-primary/80 sm:grid-cols-2">
             <li>• Ensemble comparison: RandomForest · XGBoost · LightGBM · CatBoost</li>
             <li>• Hyperparameter tuning with Optuna</li>
             <li>• SHAP-based driver attribution per user</li>
             <li>• Cohort percentiles by age × income</li>
           </ul>
-          <p className="mt-6 text-xs text-primary-foreground/60">
-            Full pipeline reproducible with <code className="rounded bg-black/20 px-1.5 py-0.5">python ml/train.py</code>.
+          <p className="mt-6 text-xs text-primary-foreground/60 dark:text-primary/60">
+            Full pipeline reproducible with <code className="rounded bg-black/10 dark:bg-white/10 px-1 py-0.5">python ai/train.py</code>
           </p>
         </div>
       </div>
