@@ -71,7 +71,15 @@ export function useThreads() {
     writeAll(all);
   }, []);
 
-  return { threads: hydrated ? threads : [], hydrated, create, remove, save };
+  const updateTitle = useCallback((id: string, title: string) => {
+    const all = readAll();
+    const idx = all.findIndex((t) => t.id === id);
+    if (idx < 0) return;
+    all[idx].title = title;
+    writeAll(all);
+  }, []);
+
+  return { threads: hydrated ? threads : [], hydrated, create, remove, save, updateTitle };
 }
 
 export function getThread(id: string): Thread | undefined {

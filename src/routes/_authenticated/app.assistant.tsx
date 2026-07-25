@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate, useParams, useRouterState } from "@tanstack/react-router";
 import { useThreads } from "@/lib/threads-store";
-import { Plus, MessageSquare, Trash2 } from "lucide-react";
+import { Plus, MessageSquare, Trash2, Edit2 } from "lucide-react";
+import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/app/assistant")({
   head: () => ({
@@ -15,7 +16,9 @@ export const Route = createFileRoute("/_authenticated/app/assistant")({
 });
 
 function AssistantLayout() {
-  const { threads, hydrated, create, remove } = useThreads();
+  const { threads, hydrated, create, remove, updateTitle } = useThreads();
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const activeId = useParams({ strict: false }).threadId as string | undefined;
@@ -50,24 +53,58 @@ function AssistantLayout() {
                   (active ? "bg-accent text-primary" : "hover:bg-accent/50")
                 }
               >
-                <Link
-                  to="/app/assistant/$threadId"
-                  params={{ threadId: t.id }}
-                  className="flex min-w-0 flex-1 items-center gap-2"
-                >
-                  <MessageSquare className="h-3.5 w-3.5 shrink-0 text-gold" />
-                  <span className="truncate">{t.title || "New conversation"}</span>
-                </Link>
-                <button
-                  onClick={() => {
-                    remove(t.id);
-                    if (active) navigate({ to: "/app/assistant" });
-                  }}
-                  className="rounded p-1 opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                  aria-label="Delete conversation"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+                {editingId === t.id ? (
+                  <input
+                    autoFocus
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        if (editTitle.trim()) updateTitle(t.id, editTitle.trim());
+                        setEditingId(null);
+                      } else if (e.key === "Escape") {
+                        setEditingId(null);
+                      }
+                    }}
+                    onBlur={() => setEditingId(null)}
+                    className="flex-1 min-w-0 bg-background/50 px-2 py-1 text-sm rounded outline-none border border-gold/40 focus:border-gold"
+                  />
+                ) : (
+                  <Link
+                    to="/app/assistant/$threadId"
+                    params={{ threadId: t.id }}
+                    className="flex min-w-0 flex-1 items-center gap-2"
+                  >
+                    <MessageSquare className="h-3.5 w-3.5 shrink-0 text-gold" />
+                    <span className="truncate">{t.title || "New conversation"}</span>
+                  </Link>
+                )}
+
+                {editingId !== t.id && (
+                  <div className="flex items-center opacity-0 transition-opacity group-hover:opacity-100">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEditTitle(t.title || "New conversation");
+                        setEditingId(t.id);
+                      }}
+                      className="rounded p-1 hover:bg-accent hover:text-primary"
+                      aria-label="Rename conversation"
+                    >
+                      <Edit2 className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        remove(t.id);
+                        if (active) navigate({ to: "/app/assistant" });
+                      }}
+                      className="rounded p-1 hover:bg-destructive/10 hover:text-destructive"
+                      aria-label="Delete conversation"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
