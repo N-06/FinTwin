@@ -1,29 +1,48 @@
-# Welcome to your Lovable project
+# FinTwin
 
-This project was built with [Lovable](https://lovable.dev).
+## Overview
+FinTwin is an innovative financial technology application designed to function as a "digital financial twin." It enables users to manage personal finances, and receive personalized wealth management strategies through intelligent, agentic architectures. 
 
-## Build with Lovable
+## Core Features
+*   **Intelligent Onboarding:** A dynamic, multi-step wizard designed to systematically gather and analyze user financial profiles and risk tolerance.
+*   **Comprehensive Financial Tracking:** Dedicated modules for budget tracking and overall financial health and risk assessment.
+*   **AI Persona Advisors:** Natural language interfaces powered by LLMs that simulate conversations with digital twins of legendary financial figures (e.g., Warren Buffett, Ray Dalio) to provide tailored investment strategies.
+*   **Decentralized Agent Clustering:** Leverages multiple AI agent clusters, including the GaiaNet public node, to route queries in real-time. This provides users with dynamic, contrasting viewpoints for strategic financial decision-making.
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+## Technology Stack
+*   **Frontend Architecture:** React, Vite
+*   **UI & Styling:** Tailwind CSS
+*   **Data Visualization:** Recharts
+*   **AI & Logic Integration:** Llama2, AI SDKs, Decentralized Agent Nodes (GaiaNet)
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
 
-## Development
+## Installation & Local Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/N-06/finTwin.git](https://github.com/N-06/FinTwin.git)
+    cd FinTwin
+    ```
+2. **Set Up and Activate the Environment**:
+    ```bash
+    python -m venv venv
+    .\venv\Scripts\Activate.ps1
+    ```
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+3.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-## Built with
+4.  **Environment Configuration:**
+    *   Create a `.env` file in the root directory.
+    *   Securely add your required API keys
+    *   *Note: Never commit your `.env` file to version control.*
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+5.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+
+## Contributing
+Contributions, issue reports, and feature requests are welcome. Please ensure that any new components or logic modules follow the established directory structure and maintain secure handling of environment variables.
