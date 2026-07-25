@@ -14,7 +14,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
-import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppAssistantRouteImport } from './routes/_authenticated/app.assistant'
 import { Route as AuthenticatedAppGlossaryRouteImport } from './routes/_authenticated/app.glossary'
@@ -48,11 +47,6 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
   id: '/app',
   path: '/app',
   getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const ApiChatRoute = ApiChatRouteImport.update({
-  id: '/api/chat',
-  path: '/api/chat',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
@@ -110,7 +104,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
   '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
   '/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/app/goals': typeof AuthenticatedAppGoalsRoute
@@ -125,7 +118,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/chat': typeof ApiChatRoute
   '/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
   '/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/app/goals': typeof AuthenticatedAppGoalsRoute
@@ -143,7 +135,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
-  '/api/chat': typeof ApiChatRoute
   '/_authenticated/app/assistant': typeof AuthenticatedAppAssistantRouteWithChildren
   '/_authenticated/app/glossary': typeof AuthenticatedAppGlossaryRoute
   '/_authenticated/app/goals': typeof AuthenticatedAppGoalsRoute
@@ -161,7 +152,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/app'
-    | '/api/chat'
     | '/app/assistant'
     | '/app/glossary'
     | '/app/goals'
@@ -176,7 +166,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/sitemap.xml'
-    | '/api/chat'
     | '/app/assistant'
     | '/app/glossary'
     | '/app/goals'
@@ -193,7 +182,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/_authenticated/app'
-    | '/api/chat'
     | '/_authenticated/app/assistant'
     | '/_authenticated/app/glossary'
     | '/_authenticated/app/goals'
@@ -210,7 +198,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  ApiChatRoute: typeof ApiChatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -249,13 +236,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/app'
       preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/api/chat': {
-      id: '/api/chat'
-      path: '/api/chat'
-      fullPath: '/api/chat'
-      preLoaderRoute: typeof ApiChatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/': {
       id: '/_authenticated/app/'
@@ -379,7 +359,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

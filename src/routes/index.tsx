@@ -207,7 +207,7 @@ function CTA({ signedIn }: { signedIn: boolean | null }) {
 function Footer() {
   return (
     <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
-      © {new Date().getFullYear()} FinTwin. For educational use — not financial advice.
+      @ 2026 FinTwin
     </footer>
   );
 }

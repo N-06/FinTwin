@@ -66,17 +66,23 @@ function ChatInner({
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  // Store onPersist safely
+  const onPersistRef = useRef(onPersist);
+  useEffect(() => { onPersistRef.current = onPersist; }, [onPersist]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [threadId]);
 
   useEffect(() => {
-    if (status === "ready" || status === "streaming") {
-      onPersist(messages);
+    // ONLY save when the stream is fully finished or idle.
+    // Saving during streaming causes React 19 to crash with "Maximum update depth"
+    // because Groq streams so fast it overwhelms the global state dispatcher.
+    if (status === "ready" && messages.length > 0) {
+      onPersistRef.current(messages);
     }
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, status, onPersist]);
+  }, [messages, status]);
 
   const busy = status === "submitted" || status === "streaming";
 
@@ -153,9 +159,6 @@ function Message({ message }: { message: UIMessage }) {
   const text = message.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
   return (
     <div className={"flex gap-3 " + (isUser ? "flex-row-reverse" : "")}>
-      <div className={"flex h-8 w-8 shrink-0 items-center justify-center rounded-full " + (isUser ? "bg-primary text-primary-foreground" : "bg-gradient-gold text-primary")}>
-        {isUser ? <User className="h-4 w-4" /> : <span className="font-serif text-sm">F</span>}
-      </div>
       <div className={isUser ? "max-w-[80%] rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground shadow-soft" : "max-w-[85%] text-sm text-foreground"}>
         {isUser ? (
           <p className="whitespace-pre-wrap">{text}</p>

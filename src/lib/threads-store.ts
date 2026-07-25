@@ -62,9 +62,9 @@ export function useThreads() {
     const title =
       firstUser
         ? firstUser.parts
-            .map((p) => (p.type === "text" ? p.text : ""))
-            .join(" ")
-            .slice(0, 60) || all[idx].title
+          .map((p) => (p.type === "text" ? p.text : ""))
+          .join(" ")
+          .slice(0, 60) || all[idx].title
         : all[idx].title;
     all[idx] = { ...all[idx], messages, title, updatedAt: Date.now() };
     all.sort((a, b) => b.updatedAt - a.updatedAt);
