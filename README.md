@@ -1,7 +1,7 @@
 # FinTwin
 
 ## Overview
-FinTwin is an innovative financial technology application designed to function as a "digital financial twin." It enables users to manage personal finances, and receive personalized wealth management strategies through intelligent, agentic architectures. 
+FinTwin is a financial technology application designed to function as a "digital financial twin." It enables users to manage personal finances, and receive personalized wealth management strategies through intelligent, agentic architectures. 
 
 ## Core Features
 *   **Intelligent Onboarding:** A dynamic, multi-step wizard designed to systematically gather and analyze user financial profiles and risk tolerance.
